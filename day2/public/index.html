@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent - Day 2: Structured Responses</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            line-height: 1.5;
+        }
+        
+        .container {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .status.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        
+        .status.success {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .chat-container {
+            min-height: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .user-message .message-content {
+            background: #0066cc;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            max-width: 70%;
+        }
+        
+        .ai-message {
+            justify-content: flex-start;
+        }
+        
+        .ai-message .message-content {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 16px;
+            max-width: 85%;
+        }
+        
+        .answer {
+            color: #1a202c;
+            font-size: 15px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        
+        .answer ol, .answer ul {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+        
+        .answer li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            padding-left: 4px;
+        }
+        
+        .answer ol li {
+            margin-bottom: 14px;
+        }
+        
+        .answer p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        
+        .answer strong {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .answer em {
+            font-style: italic;
+            color: #4b5563;
+        }
+        
+        .answer .step-number {
+            font-weight: 600;
+            color: #0066cc;
+        }
+        
+        .response-metadata {
+            border-top: 1px solid #e1e5e9;
+            padding-top: 12px;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+        
+        .badges-container {
+            margin-bottom: 8px;
+        }
+        
+        .confidence-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-right: 6px;
+        }
+        
+        .confidence-high { 
+            background: #dcfce7;
+            color: #166534;
+        }
+        .confidence-medium { 
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .confidence-low { 
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .confidence-unknown { 
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .type-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+        
+        .sources-info {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+        
+        .follow-up {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background-color 0.2s;
+        }
+        
+        .follow-up:hover {
+            background: #e0f2fe;
+        }
+        
+        .follow-up-icon {
+            color: #0ea5e9;
+            margin-right: 6px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            margin: 15px 0;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #questionInput {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        #questionInput:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 1px #0066cc;
+        }
+        
+        #askButton {
+            padding: 12px 24px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        #askButton:hover {
+            background: #0052a3;
+        }
+        
+        #askButton:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Agent - Day 2: Structured Responses</h1>
+        
+        <div id="status" class="status"></div>
+        
+        <div id="chatContainer" class="chat-container">
+            <div class="message ai-message">
+                <div class="message-content">
+                    <div class="answer">Hello! I'm your AI assistant with structured responses. Ask me anything and I'll provide detailed information including confidence level, sources, and follow-up questions!</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">🤔 Thinking...</div>
+        
+        <div class="input-container">
+            <input type="text" id="questionInput" placeholder="Ask me a question..." maxlength="500">
+            <button id="askButton">Ask</button>
+        </div>
+    </div>
+
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const questionInput = document.getElementById('questionInput');
+        const askButton = document.getElementById('askButton');
+        const loading = document.getElementById('loading');
+        const status = document.getElementById('status');
+
+        function formatAnswerText(text) {
+            let formatted = text;
+            
+            // Check if this looks like a numbered list
+            const hasNumberedList = /\d+\.\s+/.test(formatted);
+            
+            if (hasNumberedList) {
+                // Split by numbered items and create proper list
+                const parts = formatted.split(/(?=\d+\.\s+)/);
+                const intro = parts[0].trim();
+                const listItems = parts.slice(1);
+                
+                if (listItems.length > 0) {
+                    let listHTML = '';
+                    
+                    // Add intro text if exists
+                    if (intro && !intro.match(/^\d+\./)) {
+                        listHTML += `<p>${intro}</p>`;
+                    }
+                    
+                    // Create ordered list
+                    listHTML += '<ol>';
+                    listItems.forEach(item => {
+                        // Remove the number prefix and clean up
+                        const cleanItem = item.replace(/^\d+\.\s*/, '').trim();
+                        if (cleanItem) {
+                            listHTML += `<li>${cleanItem}</li>`;
+                        }
+                    });
+                    listHTML += '</ol>';
+                    
+                    formatted = listHTML;
+                }
+            } else {
+                // Handle bullet points
+                if (formatted.includes('•') || formatted.includes('-')) {
+                    const bulletRegex = /[•-]\s+/g;
+                    if (bulletRegex.test(formatted)) {
+                        const parts = formatted.split(/(?=[•-]\s+)/);
+                        const intro = parts[0].trim();
+                        const listItems = parts.slice(1);
+                        
+                        let listHTML = '';
+                        if (intro && !intro.match(/^[•-]/)) {
+                            listHTML += `<p>${intro}</p>`;
+                        }
+                        
+                        listHTML += '<ul>';
+                        listItems.forEach(item => {
+                            const cleanItem = item.replace(/^[•-]\s*/, '').trim();
+                            if (cleanItem) {
+                                listHTML += `<li>${cleanItem}</li>`;
+                            }
+                        });
+                        listHTML += '</ul>';
+                        
+                        formatted = listHTML;
+                    }
+                }
+                
+                // Add paragraph breaks for long text
+                if (!formatted.includes('<')) {
+                    formatted = formatted.replace(/\n\n+/g, '</p><p>');
+                    if (formatted.includes('</p><p>')) {
+                        formatted = '<p>' + formatted + '</p>';
+                    }
+                }
+            }
+            
+            // Highlight important terms
+            formatted = formatted.replace(/\b(important|crucial|essential|key|tip|note|remember|step|steps)\b/gi, '<strong>$1</strong>');
+            
+            return formatted;
+        }
+
+        async function checkHealth() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                
+                if (data.hasApiKey) {
+                    status.className = 'status success';
+                    status.textContent = '✅ AI Agent is ready!';
+                } else {
+                    status.className = 'status error';
+                    status.textContent = '⚠️ Warning: Anthropic API key not configured. Set ANTHROPIC_API_KEY environment variable.';
+                }
+            } catch (error) {
+                status.className = 'status error';
+                status.textContent = '❌ Error: Cannot connect to server';
+            }
+        }
+
+        function addMessage(content, isUser = false, responseData = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            if (isUser) {
+                messageContent.textContent = content;
+            } else if (responseData && responseData.structured) {
+                // Display structured response with formatted answer
+                const formattedAnswer = formatAnswerText(responseData.answer);
+                messageContent.innerHTML = `
+                    <div class="answer">${formattedAnswer}</div>
+                    <div class="response-metadata">
+                        <div class="badges-container">
+                            <span class="confidence-badge confidence-${responseData.confidence}">
+                                ${responseData.confidence} confidence
+                            </span>
+                            <span class="type-badge">${responseData.type}</span>
+                        </div>
+                        <div class="sources-info">
+                            <strong>Sources:</strong> ${responseData.sources.join(', ')}
+                        </div>
+                    </div>
+                    ${responseData.follow_up ? `
+                        <div class="follow-up" onclick="askFollowUp('${responseData.follow_up.replace(/'/g, "\\'")}')">
+                            <span class="follow-up-icon">💡</span>${responseData.follow_up}
+                        </div>
+                    ` : ''}
+                `;
+            } else {
+                // Fallback for plain text responses with formatting
+                const formattedContent = formatAnswerText(content);
+                messageContent.innerHTML = `<div class="answer">${formattedContent}</div>`;
+            }
+            
+            messageDiv.appendChild(messageContent);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function askFollowUp(question) {
+            questionInput.value = question;
+            askQuestion();
+        }
+
+        async function askQuestion() {
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            addMessage(question, true);
+            questionInput.value = '';
+            askButton.disabled = true;
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.structured) {
+                        addMessage(null, false, data);
+                    } else {
+                        addMessage(data.answer || data.error);
+                    }
+                } else {
+                    addMessage(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                addMessage('Error: Failed to get response from server');
+                console.error('Request failed:', error);
+            } finally {
+                askButton.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        askButton.addEventListener('click', askQuestion);
+        
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !askButton.disabled) {
+                askQuestion();
+            }
+        });
+
+        checkHealth();
+    </script>
+</body>
+</html>

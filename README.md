@@ -1,53 +1,79 @@
-# AI Agent
+# AI Agent Contest
 
-A simple AI agent that accepts questions via HTTP and returns AI-generated responses.
+A progressive AI agent implementation showcasing different capabilities across multiple days.
 
-## Features
+## Project Structure
 
-- HTTP API endpoint for asking questions
-- Web interface for easy interaction
-- OpenAI GPT-3.5 integration
-- Real-time chat interface
-- Health check endpoint
+- **day1/**: Basic AI agent with simple HTTP API and Claude integration
+- **day2/**: Enhanced agent with structured JSON responses and rich metadata
 
-## Setup
+## Day-by-Day Progress
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Day 1: Basic AI Agent ✅
+**Goal**: "The agent correctly accepts user input, makes a call to the selected model/tool, and returns the response."
 
-2. Set up your OpenAI API key:
-   ```bash
-   export OPENAI_API_KEY="your_api_key_here"
-   ```
-   
-   Or create a `.env` file (copy from `.env.example`):
-   ```bash
-   cp .env.example .env
-   # Edit .env and add your API key
-   ```
+- ✅ HTTP API with `/api/ask` endpoint
+- ✅ Web interface for chat interaction  
+- ✅ Anthropic Claude API integration
+- ✅ Error handling and retry logic
 
-3. Start the server:
-   ```bash
-   npm start
-   ```
+[View Day 1 Implementation →](./day1/)
 
-4. Open your browser and go to `http://localhost:3000`
+### Day 2: Structured Response Formatting ✅
+**Goal**: "The response from the LLM can be correctly parsed by your application."
 
-## API Endpoints
+- ✅ Structured JSON response format with metadata
+- ✅ Confidence levels (high/medium/low) 
+- ✅ Response types (factual/opinion/creative/unknown)
+- ✅ Source attribution and follow-up suggestions
+- ✅ Rich web interface with interactive elements
+
+[View Day 2 Implementation →](./day2/)
+
+## Quick Start
+
+Choose which implementation to run:
+
+### Run Day 1 (Basic Agent)
+```bash
+cd day1
+npm install
+export ANTHROPIC_API_KEY="your_key_here"
+npm start
+# Visit http://localhost:3000
+```
+
+### Run Day 2 (Structured Responses)
+```bash
+cd day2  
+npm install
+export ANTHROPIC_API_KEY="your_key_here"
+npm start
+# Visit http://localhost:3000
+```
+
+## Key Features Comparison
+
+| Feature | Day 1 | Day 2 |
+|---------|-------|-------|
+| Basic HTTP API | ✅ | ✅ |
+| Web Interface | ✅ | ✅ Enhanced |
+| Claude API Integration | ✅ | ✅ |
+| Structured Responses | ❌ | ✅ JSON Format |
+| Confidence Levels | ❌ | ✅ High/Medium/Low |
+| Response Types | ❌ | ✅ Factual/Opinion/Creative |
+| Source Attribution | ❌ | ✅ |
+| Follow-up Suggestions | ❌ | ✅ Interactive |
+| JSON Parsing | ❌ | ✅ With Validation |
+
+## API Documentation
+
+Both implementations share the same basic API structure:
 
 ### POST /api/ask
 Send a question to the AI agent.
 
-**Request:**
-```json
-{
-  "question": "What is the capital of France?"
-}
-```
-
-**Response:**
+**Day 1 Response:**
 ```json
 {
   "question": "What is the capital of France?",
@@ -55,25 +81,23 @@ Send a question to the AI agent.
 }
 ```
 
-### GET /api/health
-Check server and API key status.
-
-**Response:**
+**Day 2 Response:**
 ```json
 {
-  "status": "ok",
-  "hasApiKey": true,
-  "timestamp": "2023-11-12T16:07:31.123Z"
+  "answer": "The capital of France is Paris, located in the north-central part of the country.",
+  "confidence": "high",
+  "type": "factual", 
+  "sources": ["general knowledge"],
+  "follow_up": "Would you like to know more about Paris's history?",
+  "question": "What is the capital of France?",
+  "structured": true
 }
 ```
 
-## Usage
-
-1. **Web Interface**: Visit `http://localhost:3000` and type questions in the chat interface
-2. **HTTP API**: Send POST requests to `/api/ask` with your questions
-3. **Health Check**: GET `/api/health` to verify the service is running
+### GET /api/health
+Check server and API key status (same for both days).
 
 ## Requirements
 
 - Node.js 14+
-- OpenAI API key
+- Anthropic API key

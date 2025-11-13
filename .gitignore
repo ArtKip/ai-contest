@@ -1,2 +1,4 @@
 node_modules/
 .env
+day1/.env
+day2/.env
