@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent - Day 3: Interactive Requirements Gathering</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            line-height: 1.5;
+        }
+        
+        .container {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 30px;
+            min-height: 600px;
+        }
+        
+        h1 {
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .chat-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .progress-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .progress-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        
+        .phase-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .phase-greeting { background: #e0f2fe; color: #0369a1; }
+        .phase-gathering { background: #fef3c7; color: #92400e; }
+        .phase-finalizing { background: #ddd6fe; color: #7c2d12; }
+        .phase-complete { background: #dcfce7; color: #166534; }
+        
+        .requirements-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .requirements-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 6px;
+            background: white;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .req-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        
+        .req-pending { background: #e5e7eb; }
+        .req-partial { background: #fbbf24; }
+        .req-complete { background: #10b981; }
+        
+        .chat-container {
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .user-message .message-content {
+            background: #0066cc;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            max-width: 70%;
+        }
+        
+        .ai-message {
+            justify-content: flex-start;
+        }
+        
+        .ai-message .message-content {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 16px;
+            max-width: 85%;
+        }
+        
+        .final-spec {
+            background: #f0fdf4 !important;
+            border: 2px solid #16a34a !important;
+        }
+        
+        .final-spec::before {
+            content: "📋 Final Technical Specification";
+            display: block;
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .answer {
+            color: #1a202c;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .answer h1, .answer h2, .answer h3 {
+            color: #374151;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .answer h2 {
+            font-size: 18px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 5px;
+        }
+        
+        .answer ol, .answer ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        
+        .answer li {
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+        
+        .answer strong {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            margin: 15px 0;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #messageInput {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        #messageInput:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 1px #0066cc;
+        }
+        
+        #sendButton {
+            padding: 12px 24px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        #sendButton:hover {
+            background: #0052a3;
+        }
+        
+        #sendButton:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .new-conversation-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        .new-conversation-btn:hover {
+            background: #059669;
+        }
+        
+        .spec-actions {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .download-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .download-btn:hover {
+            background: #7c3aed;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Requirements Analyst</h1>
+        <p class="subtitle">Interactive conversation to generate technical specifications</p>
+        
+        <div class="main-content">
+            <div class="chat-section">
+                <div id="chatContainer" class="chat-container">
+                    <div class="message ai-message">
+                        <div class="message-content">
+                            <div class="answer">Welcome! I'll help you create a comprehensive technical specification for your software project. We'll have a conversation to gather all the requirements, and I'll generate a final document when we have enough information.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="loading" id="loading">🤔 Analyzing requirements...</div>
+                
+                <div class="input-container">
+                    <input type="text" id="messageInput" placeholder="Tell me about your project..." maxlength="500">
+                    <button id="sendButton">Send</button>
+                </div>
+            </div>
+            
+            <div class="progress-section">
+                <button class="new-conversation-btn" onclick="startNewConversation()">🔄 New Project</button>
+                
+                <div class="progress-title">Conversation Progress</div>
+                <div id="phaseIndicator" class="phase-indicator phase-greeting">
+                    🎯 Starting conversation...
+                </div>
+                
+                <div class="progress-title">Requirements Checklist</div>
+                <ul class="requirements-list">
+                    <li><span id="req-name" class="req-status req-pending"></span>Project Name</li>
+                    <li><span id="req-type" class="req-status req-pending"></span>Project Type</li>
+                    <li><span id="req-features" class="req-status req-pending"></span>Key Features</li>
+                    <li><span id="req-tech" class="req-status req-pending"></span>Technology Stack</li>
+                    <li><span id="req-timeline" class="req-status req-pending"></span>Timeline</li>
+                </ul>
+                
+                <div id="specActions" class="spec-actions" style="display: none;">
+                    <div class="progress-title">✅ Specification Complete!</div>
+                    <button class="download-btn" onclick="downloadSpecification()">📄 Download Spec</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSessionId = null;
+        let currentPhase = 'greeting';
+        let finalSpecification = null;
+        
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const loading = document.getElementById('loading');
+        const phaseIndicator = document.getElementById('phaseIndicator');
+        const specActions = document.getElementById('specActions');
+
+        function formatAnswerText(text) {
+            let formatted = text;
+            
+            // Check if this looks like a numbered list
+            const hasNumberedList = /\d+\.\s+/.test(formatted);
+            
+            if (hasNumberedList) {
+                // Split by numbered items and create proper list
+                const parts = formatted.split(/(?=\d+\.\s+)/);
+                const intro = parts[0].trim();
+                const listItems = parts.slice(1);
+                
+                if (listItems.length > 0) {
+                    let listHTML = '';
+                    
+                    // Add intro text if exists
+                    if (intro && !intro.match(/^\d+\./)) {
+                        listHTML += `<p>${intro}</p>`;
+                    }
+                    
+                    // Create ordered list
+                    listHTML += '<ol>';
+                    listItems.forEach(item => {
+                        // Remove the number prefix and clean up
+                        const cleanItem = item.replace(/^\d+\.\s*/, '').trim();
+                        if (cleanItem) {
+                            listHTML += `<li>${cleanItem}</li>`;
+                        }
+                    });
+                    listHTML += '</ol>';
+                    
+                    formatted = listHTML;
+                }
+            }
+            
+            // Format headers for technical specifications
+            formatted = formatted.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+            formatted = formatted.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+            formatted = formatted.replace(/^\*\*(.*?)\*\*/gm, '<strong>$1</strong>');
+            
+            // Add paragraph breaks for long text
+            if (!formatted.includes('<')) {
+                formatted = formatted.replace(/\n\n+/g, '</p><p>');
+                if (formatted.includes('</p><p>')) {
+                    formatted = '<p>' + formatted + '</p>';
+                }
+            }
+            
+            return formatted;
+        }
+
+        function updatePhaseIndicator(phase, isComplete) {
+            const indicators = {
+                'greeting': { text: '🎯 Starting conversation...', class: 'phase-greeting' },
+                'gathering': { text: '📝 Gathering requirements...', class: 'phase-gathering' },
+                'finalizing': { text: '⚡ Generating specification...', class: 'phase-finalizing' },
+                'complete': { text: '✅ Specification complete!', class: 'phase-complete' }
+            };
+            
+            const indicator = indicators[phase] || indicators['greeting'];
+            phaseIndicator.textContent = indicator.text;
+            phaseIndicator.className = `phase-indicator ${indicator.class}`;
+            
+            if (isComplete) {
+                specActions.style.display = 'block';
+            }
+        }
+
+        function updateRequirements(requirements) {
+            const reqMap = {
+                'req-name': requirements.projectName,
+                'req-type': requirements.projectType,
+                'req-features': requirements.functionality && requirements.functionality.length > 0,
+                'req-tech': requirements.techStack && requirements.techStack.length > 0,
+                'req-timeline': requirements.timeline
+            };
+            
+            Object.entries(reqMap).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (value) {
+                    element.className = 'req-status req-complete';
+                } else {
+                    element.className = 'req-status req-pending';
+                }
+            });
+        }
+
+        function addMessage(content, isUser = false, isFinalSpec = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = `message-content ${isFinalSpec ? 'final-spec' : ''}`;
+            
+            if (isUser) {
+                messageContent.textContent = content;
+            } else {
+                const formattedContent = formatAnswerText(content);
+                messageContent.innerHTML = `<div class="answer">${formattedContent}</div>`;
+                
+                if (isFinalSpec) {
+                    finalSpecification = content;
+                }
+            }
+            
+            messageDiv.appendChild(messageContent);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message || !currentSessionId) return;
+
+            addMessage(message, true);
+            messageInput.value = '';
+            sendButton.disabled = true;
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/conversation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        message: message,
+                        sessionId: currentSessionId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    addMessage(data.response, false, data.isFinalSpecification);
+                    updatePhaseIndicator(data.phase, data.isComplete);
+                    updateRequirements(data.requirements);
+                    currentPhase = data.phase;
+                } else {
+                    addMessage(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                addMessage('Error: Failed to get response from server');
+                console.error('Request failed:', error);
+            } finally {
+                sendButton.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        async function startNewConversation() {
+            try {
+                const response = await fetch('/api/new-conversation', {
+                    method: 'POST',
+                });
+
+                const data = await response.json();
+                
+                currentSessionId = data.sessionId;
+                finalSpecification = null;
+                
+                // Clear chat
+                chatContainer.innerHTML = '';
+                addMessage(data.message, false);
+                
+                // Reset UI
+                updatePhaseIndicator('greeting', false);
+                updateRequirements({});
+                specActions.style.display = 'none';
+                
+            } catch (error) {
+                console.error('Failed to start new conversation:', error);
+            }
+        }
+
+        function downloadSpecification() {
+            if (!finalSpecification) return;
+            
+            const blob = new Blob([finalSpecification], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'technical-specification.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !sendButton.disabled) {
+                sendMessage();
+            }
+        });
+
+        // Start initial conversation
+        startNewConversation();
+    </script>
+</body>
+</html>
