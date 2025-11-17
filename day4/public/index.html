@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent - Day 4: Temperature Comparison</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            line-height: 1.5;
+        }
+        
+        .container {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+        
+        textarea:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 1px #0066cc;
+            outline: none;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .compare-btn {
+            padding: 12px 24px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        
+        .compare-btn:hover {
+            background: #0052a3;
+        }
+        
+        .compare-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .suggestions-btn {
+            padding: 8px 16px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .suggestions-btn:hover {
+            background: #059669;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        
+        .results-section {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .result-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f9fafb;
+        }
+        
+        .result-header {
+            background: #374151;
+            color: white;
+            padding: 15px;
+        }
+        
+        .temp-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .temp-name {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .temp-description {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        
+        .result-content {
+            padding: 20px;
+        }
+        
+        .response-text {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .analysis {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 12px;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .metric-label {
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .metric-value {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .comparison-section {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .comparison-title {
+            font-weight: 600;
+            color: #0c4a6e;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .comparison-item {
+            background: white;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .comparison-label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .comparison-winner {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0c4a6e;
+        }
+        
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+        
+        .suggestions-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .suggestion-category {
+            margin-bottom: 20px;
+        }
+        
+        .category-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+        
+        .suggestion-item {
+            padding: 8px 12px;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+        }
+        
+        .suggestion-item:hover {
+            background: #e5e7eb;
+        }
+        
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .compare-btn, .suggestions-btn {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌡️ Temperature Comparison Lab</h1>
+        <p class="subtitle">Compare AI responses across different temperature settings</p>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="promptInput">Enter your prompt:</label>
+                <textarea id="promptInput" placeholder="Try: 'Write a short story about a robot discovering emotions' or 'Explain machine learning in simple terms'"></textarea>
+            </div>
+            
+            <div class="controls">
+                <select id="maxTokens">
+                    <option value="200">200 tokens</option>
+                    <option value="300" selected>300 tokens</option>
+                    <option value="500">500 tokens</option>
+                    <option value="800">800 tokens</option>
+                </select>
+                
+                <button id="compareBtn" class="compare-btn">🔥 Compare Temperatures</button>
+                <button id="suggestionsBtn" class="suggestions-btn">💡 Get Prompts</button>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            🤔 Running comparisons across all temperatures...
+        </div>
+        
+        <div class="results-section" id="results">
+            <div class="results-grid" id="resultsGrid"></div>
+            <div class="comparison-section" id="comparison"></div>
+        </div>
+    </div>
+
+    <!-- Suggestions Modal -->
+    <div class="suggestions-modal" id="suggestionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Prompt Suggestions</h3>
+                <button class="close-btn" onclick="closeSuggestions()">&times;</button>
+            </div>
+            <div id="suggestionsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const promptInput = document.getElementById('promptInput');
+        const maxTokensSelect = document.getElementById('maxTokens');
+        const compareBtn = document.getElementById('compareBtn');
+        const suggestionsBtn = document.getElementById('suggestionsBtn');
+        const loading = document.getElementById('loading');
+        const results = document.getElementById('results');
+        const resultsGrid = document.getElementById('resultsGrid');
+        const comparison = document.getElementById('comparison');
+        const suggestionsModal = document.getElementById('suggestionsModal');
+        const suggestionsContent = document.getElementById('suggestionsContent');
+
+        async function compareTemperatures() {
+            const prompt = promptInput.value.trim();
+            if (!prompt) {
+                alert('Please enter a prompt');
+                return;
+            }
+
+            compareBtn.disabled = true;
+            loading.style.display = 'block';
+            results.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/compare-temperatures', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        maxTokens: parseInt(maxTokensSelect.value)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayResults(data);
+                    results.style.display = 'block';
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                alert('Failed to get response from server');
+                console.error('Request failed:', error);
+            } finally {
+                compareBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        function displayResults(data) {
+            // Clear previous results
+            resultsGrid.innerHTML = '';
+            comparison.innerHTML = '';
+
+            // Display individual results
+            data.results.forEach(result => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+
+                if (result.error) {
+                    card.innerHTML = `
+                        <div class="result-header">
+                            <div class="temp-value">Temperature ${result.temperature}</div>
+                            <div class="temp-name">${result.name}</div>
+                        </div>
+                        <div class="result-content">
+                            <div class="error">Error: ${result.error}</div>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div class="result-header">
+                            <div class="temp-value">Temperature ${result.temperature}</div>
+                            <div class="temp-name">${result.name}</div>
+                            <div class="temp-description">${result.description}</div>
+                        </div>
+                        <div class="result-content">
+                            <div class="response-text">${result.response}</div>
+                            <div class="analysis">
+                                <div class="metric">
+                                    <span class="metric-label">Words</span>
+                                    <span class="metric-value">${result.analysis.wordCount}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Sentences</span>
+                                    <span class="metric-value">${result.analysis.sentenceCount}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Avg/Sentence</span>
+                                    <span class="metric-value">${result.analysis.avgWordsPerSentence}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Diversity</span>
+                                    <span class="metric-value">${result.analysis.lexicalDiversity}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Creativity</span>
+                                    <span class="metric-value">${result.analysis.creativityScore}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-label">Exclamations</span>
+                                    <span class="metric-value">${result.analysis.exclamationCount}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                resultsGrid.appendChild(card);
+            });
+
+            // Display comparison
+            if (data.comparison) {
+                comparison.innerHTML = `
+                    <div class="comparison-title">🏆 Comparison Analysis</div>
+                    <div class="comparison-grid">
+                        <div class="comparison-item">
+                            <div class="comparison-label">Most Wordy</div>
+                            <div class="comparison-winner">${data.comparison.mostWordy.name} (${data.comparison.mostWordy.analysis?.wordCount || 'N/A'} words)</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Most Creative</div>
+                            <div class="comparison-winner">${data.comparison.mostCreative.name} (${data.comparison.mostCreative.analysis?.creativityScore || 'N/A'})</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Most Diverse</div>
+                            <div class="comparison-winner">${data.comparison.mostDiverse.name} (${data.comparison.mostDiverse.analysis?.lexicalDiversity || 'N/A'})</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="comparison-label">Most Concise</div>
+                            <div class="comparison-winner">${data.comparison.mostConcise.name} (${data.comparison.mostConcise.analysis?.avgWordsPerSentence || 'N/A'} avg)</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadSuggestions() {
+            try {
+                const response = await fetch('/api/prompt-suggestions');
+                const suggestions = await response.json();
+                
+                suggestionsContent.innerHTML = '';
+                
+                suggestions.forEach(category => {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'suggestion-category';
+                    
+                    const title = document.createElement('div');
+                    title.className = 'category-title';
+                    title.textContent = category.category;
+                    categoryDiv.appendChild(title);
+                    
+                    category.prompts.forEach(prompt => {
+                        const item = document.createElement('div');
+                        item.className = 'suggestion-item';
+                        item.textContent = prompt;
+                        item.onclick = () => {
+                            promptInput.value = prompt;
+                            closeSuggestions();
+                        };
+                        categoryDiv.appendChild(item);
+                    });
+                    
+                    suggestionsContent.appendChild(categoryDiv);
+                });
+                
+                suggestionsModal.style.display = 'block';
+            } catch (error) {
+                console.error('Failed to load suggestions:', error);
+            }
+        }
+
+        function closeSuggestions() {
+            suggestionsModal.style.display = 'none';
+        }
+
+        compareBtn.addEventListener('click', compareTemperatures);
+        suggestionsBtn.addEventListener('click', loadSuggestions);
+
+        // Close modal when clicking outside
+        suggestionsModal.addEventListener('click', (e) => {
+            if (e.target === suggestionsModal) {
+                closeSuggestions();
+            }
+        });
+
+        // Enter key to compare
+        promptInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey && !compareBtn.disabled) {
+                compareTemperatures();
+            }
+        });
+
+        // Set default prompt
+        promptInput.value = "Write a creative story about a robot discovering emotions for the first time";
+    </script>
+</body>
+</html>
