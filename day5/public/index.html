@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent - Day 5: Token Analysis</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            line-height: 1.5;
+        }
+        
+        .container {
+            background: white;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .control-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .control-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        label {
+            font-weight: 500;
+            color: #374151;
+            font-size: 13px;
+        }
+        
+        select, input[type="number"] {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .prompt-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .example-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .example-card:hover {
+            border-color: #0066cc;
+            background: #f0f9ff;
+        }
+        
+        .example-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+        
+        .example-info {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        
+        .token-estimate {
+            font-size: 11px;
+            color: #059669;
+            font-weight: 500;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0052a3;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #6b7280;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        
+        .results-section {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .result-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .result-header {
+            background: #374151;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .result-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .result-content {
+            padding: 20px;
+        }
+        
+        .token-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .token-metric {
+            text-align: center;
+        }
+        
+        .token-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0066cc;
+        }
+        
+        .token-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .accuracy-indicator {
+            margin-top: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .accuracy-good { color: #059669; }
+        .accuracy-fair { color: #d97706; }
+        .accuracy-poor { color: #dc2626; }
+        
+        .response-text {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 200px;
+            max-height: 600px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            position: relative;
+        }
+        
+        .response-text::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .response-text::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .response-text::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        .response-text::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        .scrollable-hint {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 8px;
+            margin: -15px -15px 10px -15px;
+            font-size: 12px;
+            color: #6b7280;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .error-message {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+        
+        .comparison-section {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .limits-info {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .limits-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        
+        .limits-details {
+            font-size: 13px;
+            color: #78350f;
+        }
+        
+        @media (max-width: 768px) {
+            .control-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .prompt-examples {
+                grid-template-columns: 1fr;
+            }
+            
+            .token-analysis {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔢 Token Analysis Lab</h1>
+        <p class="subtitle">Explore how prompt length affects token usage and model behavior</p>
+        
+        <div class="control-section">
+            <div class="control-row">
+                <div class="control-group">
+                    <label for="modelSelect">Model</label>
+                    <select id="modelSelect">
+                        <option value="claude-3-haiku-20240307">Claude 3 Haiku (200K context)</option>
+                        <option value="claude-3-5-sonnet-20240620">Claude 3.5 Sonnet (200K context)</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="maxTokens">Max Output Tokens</label>
+                    <input type="number" id="maxTokens" value="1000" min="1" max="4096">
+                </div>
+                
+                <div class="control-group">
+                    <label for="promptType">Prompt Type</label>
+                    <select id="promptType">
+                        <option value="short">Short Prompt</option>
+                        <option value="medium">Medium Prompt</option>
+                        <option value="long">Long Prompt</option>
+                        <option value="veryLong">Very Long Prompt</option>
+                        <option value="custom">Custom Prompt</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="promptExamples" class="prompt-examples"></div>
+            
+            <div id="selectedPromptPreview" style="display: none;">
+                <label for="promptPreview">Selected Prompt Preview:</label>
+                <textarea id="promptPreview" readonly style="background: #f8f9fa; min-height: 150px;"></textarea>
+                <div id="previewTokenEstimate" class="token-estimate"></div>
+            </div>
+            
+            <div id="customPromptSection" style="display: none;">
+                <label for="customPrompt">Custom Prompt:</label>
+                <textarea id="customPrompt" placeholder="Enter your custom prompt here..."></textarea>
+                <div id="customTokenEstimate" class="token-estimate"></div>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="testSingleBtn" class="btn btn-primary">🧪 Test Single Prompt</button>
+                <button id="compareAllBtn" class="btn btn-secondary">⚖️ Compare All Prompts</button>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            🔄 Processing request and analyzing tokens...
+        </div>
+        
+        <div class="results-section" id="singleResults"></div>
+        <div class="comparison-section" id="comparisonResults"></div>
+    </div>
+
+    <script>
+        const modelSelect = document.getElementById('modelSelect');
+        const maxTokensInput = document.getElementById('maxTokens');
+        const promptTypeSelect = document.getElementById('promptType');
+        const customPromptSection = document.getElementById('customPromptSection');
+        const customPromptTextarea = document.getElementById('customPrompt');
+        const customTokenEstimate = document.getElementById('customTokenEstimate');
+        const promptExamplesDiv = document.getElementById('promptExamples');
+        const selectedPromptPreview = document.getElementById('selectedPromptPreview');
+        const promptPreviewTextarea = document.getElementById('promptPreview');
+        const previewTokenEstimate = document.getElementById('previewTokenEstimate');
+        const testSingleBtn = document.getElementById('testSingleBtn');
+        const compareAllBtn = document.getElementById('compareAllBtn');
+        const loading = document.getElementById('loading');
+        const singleResults = document.getElementById('singleResults');
+        const comparisonResults = document.getElementById('comparisonResults');
+
+        let promptExamples = {};
+
+        // Load prompt examples on page load
+        async function loadPromptExamples() {
+            try {
+                const response = await fetch('/api/prompt-examples');
+                const data = await response.json();
+                promptExamples = data.prompts;
+                displayPromptExamples();
+                displayModelLimits(data.modelLimits);
+            } catch (error) {
+                console.error('Failed to load prompt examples:', error);
+            }
+        }
+
+        function displayPromptExamples() {
+            promptExamplesDiv.innerHTML = '';
+            
+            Object.entries(promptExamples).forEach(([key, example]) => {
+                const card = document.createElement('div');
+                card.className = 'example-card';
+                card.onclick = () => selectPromptType(key);
+                
+                card.innerHTML = `
+                    <div class="example-title">${example.name}</div>
+                    <div class="example-info">${example.description}</div>
+                    <div class="token-estimate">
+                        ~${example.tokenEstimate.estimated} tokens 
+                        (${example.tokenEstimate.characters} chars, ${example.tokenEstimate.words} words)
+                    </div>
+                `;
+                
+                promptExamplesDiv.appendChild(card);
+            });
+        }
+
+        function displayModelLimits(limits) {
+            const currentModel = modelSelect.value;
+            const modelLimits = limits[currentModel];
+            
+            if (modelLimits) {
+                const limitsInfo = document.createElement('div');
+                limitsInfo.className = 'limits-info';
+                limitsInfo.innerHTML = `
+                    <div class="limits-title">Current Model: ${modelLimits.name}</div>
+                    <div class="limits-details">
+                        Context Window: ${modelLimits.contextWindow.toLocaleString()} tokens | 
+                        Max Output: ${modelLimits.maxOutput.toLocaleString()} tokens
+                    </div>
+                `;
+                
+                // Insert after control section
+                const controlSection = document.querySelector('.control-section');
+                const existingLimits = document.querySelector('.limits-info');
+                if (existingLimits) existingLimits.remove();
+                controlSection.insertAdjacentElement('afterend', limitsInfo);
+            }
+        }
+
+        function selectPromptType(key) {
+            promptTypeSelect.value = key;
+            toggleCustomPromptSection();
+            showPromptPreview();
+        }
+
+        function toggleCustomPromptSection() {
+            const isCustom = promptTypeSelect.value === 'custom';
+            const selectedType = promptTypeSelect.value;
+            
+            customPromptSection.style.display = isCustom ? 'block' : 'none';
+            selectedPromptPreview.style.display = (isCustom || selectedType === 'short') ? 'none' : 'block';
+            
+            if (isCustom) {
+                updateCustomTokenEstimate();
+            }
+        }
+
+        function showPromptPreview() {
+            const selectedType = promptTypeSelect.value;
+            
+            if (selectedType !== 'custom' && promptExamples[selectedType]) {
+                const example = promptExamples[selectedType];
+                promptPreviewTextarea.value = example.prompt;
+                
+                const estimated = example.tokenEstimate.estimated;
+                const chars = example.tokenEstimate.characters;
+                const words = example.tokenEstimate.words;
+                
+                previewTokenEstimate.textContent = `~${estimated} tokens (${chars} chars, ${words} words)`;
+                selectedPromptPreview.style.display = 'block';
+            } else {
+                selectedPromptPreview.style.display = 'none';
+            }
+        }
+
+        function updateCustomTokenEstimate() {
+            const text = customPromptTextarea.value;
+            if (text) {
+                const estimated = Math.ceil(text.length / 3); // Conservative estimate
+                const chars = text.length;
+                const words = text.split(/\s+/).filter(w => w.length > 0).length;
+                
+                customTokenEstimate.textContent = `~${estimated} tokens (${chars} chars, ${words} words)`;
+            } else {
+                customTokenEstimate.textContent = '';
+            }
+        }
+
+        async function testSinglePrompt() {
+            const promptType = promptTypeSelect.value;
+            const customPrompt = customPromptTextarea.value;
+            const model = modelSelect.value;
+            const maxTokens = parseInt(maxTokensInput.value);
+
+            testSingleBtn.disabled = true;
+            compareAllBtn.disabled = true;
+            loading.style.display = 'block';
+            singleResults.style.display = 'none';
+            comparisonResults.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/test-tokens', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        promptType,
+                        customPrompt,
+                        model,
+                        maxTokens
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displaySingleResult(data);
+                    singleResults.style.display = 'block';
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                alert('Failed to get response from server');
+                console.error('Request failed:', error);
+            } finally {
+                testSingleBtn.disabled = false;
+                compareAllBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        async function compareAllPrompts() {
+            const model = modelSelect.value;
+            const maxTokens = parseInt(maxTokensInput.value);
+
+            testSingleBtn.disabled = true;
+            compareAllBtn.disabled = true;
+            loading.style.display = 'block';
+            singleResults.style.display = 'none';
+            comparisonResults.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/compare-prompts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model,
+                        maxTokens
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayComparisonResults(data);
+                    comparisonResults.style.display = 'block';
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                alert('Failed to get response from server');
+                console.error('Request failed:', error);
+            } finally {
+                testSingleBtn.disabled = false;
+                compareAllBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        function displaySingleResult(data) {
+            singleResults.innerHTML = '';
+            
+            const resultCard = createResultCard(data.testInfo, data.result, data.promptLength);
+            singleResults.appendChild(resultCard);
+        }
+
+        function displayComparisonResults(data) {
+            comparisonResults.innerHTML = '<h2>📊 Prompt Length Comparison</h2>';
+            
+            const grid = document.createElement('div');
+            grid.className = 'comparison-grid';
+            
+            Object.entries(data.results).forEach(([key, result]) => {
+                const card = createResultCard(result.testInfo, result.result, result.promptLength);
+                grid.appendChild(card);
+            });
+            
+            comparisonResults.appendChild(grid);
+        }
+
+        function createResultCard(testInfo, result, promptLength) {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            
+            const status = result.success ? '✅ Success' : '❌ Failed';
+            const statusClass = result.success ? 'accuracy-good' : 'accuracy-poor';
+            
+            let contentHTML = '';
+            
+            if (result.success && result.tokenAnalysis) {
+                const analysis = result.tokenAnalysis;
+                contentHTML = `
+                    <div class="token-analysis">
+                        <div class="token-metric">
+                            <div class="token-value">${analysis.input.actual || analysis.input.estimated.estimated}</div>
+                            <div class="token-label">Input Tokens</div>
+                            ${analysis.input.actual ? `<div class="accuracy-indicator ${getAccuracyClass(analysis.accuracy.inputAccuracy)}">
+                                Est: ${analysis.input.estimated.estimated} (${analysis.accuracy.inputAccuracy}% accuracy)
+                            </div>` : '<div class="accuracy-indicator">Estimated</div>'}
+                        </div>
+                        
+                        <div class="token-metric">
+                            <div class="token-value">${analysis.output?.actual || analysis.output?.estimated.estimated || 'N/A'}</div>
+                            <div class="token-label">Output Tokens</div>
+                            ${analysis.output?.actual ? `<div class="accuracy-indicator ${getAccuracyClass(analysis.accuracy.outputAccuracy)}">
+                                Est: ${analysis.output.estimated.estimated} (${analysis.accuracy.outputAccuracy}% accuracy)
+                            </div>` : '<div class="accuracy-indicator">Not generated</div>'}
+                        </div>
+                        
+                        <div class="token-metric">
+                            <div class="token-value">${analysis.total?.actual || analysis.total?.estimated || 'N/A'}</div>
+                            <div class="token-label">Total Tokens</div>
+                        </div>
+                        
+                        <div class="token-metric">
+                            <div class="token-value">${promptLength.toLocaleString()}</div>
+                            <div class="token-label">Characters</div>
+                            <div class="accuracy-indicator">${(analysis.input.estimated.tokensPerChar)} tokens/char</div>
+                        </div>
+                    </div>
+                `;
+                
+                if (result.response) {
+                    const responseLength = result.response.length;
+                    contentHTML += `
+                        <div class="response-text" title="Scroll to see full response">
+                            <strong>Response (${responseLength} characters):</strong>
+                            ${responseLength > 3000 ? '<em style="color: #6b7280; font-size: 12px;"> - Scroll down to see full response</em>' : ''}
+                            <br><br>
+                            ${result.response}
+                        </div>
+                    `;
+                }
+            } else {
+                contentHTML = `
+                    <div class="error-message">
+                        ${result.error || 'Unknown error'}
+                        ${result.details ? `<br><small>${result.details}</small>` : ''}
+                    </div>
+                `;
+                
+                if (result.tokenAnalysis?.input?.estimated) {
+                    contentHTML += `
+                        <div class="token-analysis">
+                            <div class="token-metric">
+                                <div class="token-value">${result.tokenAnalysis.input.estimated.estimated}</div>
+                                <div class="token-label">Estimated Input Tokens</div>
+                            </div>
+                            <div class="token-metric">
+                                <div class="token-value">${promptLength.toLocaleString()}</div>
+                                <div class="token-label">Characters</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            card.innerHTML = `
+                <div class="result-header">
+                    <div class="result-title">${testInfo.name}</div>
+                    <div class="result-status ${statusClass}">${status}</div>
+                </div>
+                <div class="result-content">
+                    <p><strong>Description:</strong> ${testInfo.description}</p>
+                    <p><strong>Expected:</strong> ${testInfo.expectedBehavior}</p>
+                    ${contentHTML}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function getAccuracyClass(accuracy) {
+            const acc = parseFloat(accuracy);
+            if (acc >= 80 && acc <= 120) return 'accuracy-good';
+            if (acc >= 60 && acc <= 140) return 'accuracy-fair';
+            return 'accuracy-poor';
+        }
+
+        // Event listeners
+        promptTypeSelect.addEventListener('change', () => {
+            toggleCustomPromptSection();
+            showPromptPreview();
+        });
+        customPromptTextarea.addEventListener('input', updateCustomTokenEstimate);
+        modelSelect.addEventListener('change', () => loadPromptExamples());
+        testSingleBtn.addEventListener('click', testSinglePrompt);
+        compareAllBtn.addEventListener('click', compareAllPrompts);
+
+        // Initialize
+        loadPromptExamples();
+        toggleCustomPromptSection();
+    </script>
+</body>
+</html>
