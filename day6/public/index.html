@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent - Day 6: Subagent Interaction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .agent-info {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            align-items: center;
+        }
+
+        .agent-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .agent-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .agent-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .agent-name {
+            font-weight: 600;
+            color: #1a202c;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .agent-model {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .agent-role {
+            font-size: 0.85rem;
+            color: #4b5563;
+            font-style: italic;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            font-size: 2rem;
+            color: #667eea;
+        }
+
+        .input-section {
+            padding: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .examples-section {
+            margin-top: 20px;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .example-category {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .category-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .example-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .example-item:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f4ff;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .loading-content {
+            display: inline-block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #6b7280;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .results-section {
+            display: none;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            color: #1a202c;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .execution-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .summary-metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .validation-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .badge-pass {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-needs-improvement {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .pipeline-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e9ecef;
+        }
+
+        .result-header {
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .agent1-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .agent2-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .result-time {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .result-content {
+            padding: 20px;
+        }
+
+        .content-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .content-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .metadata-item {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .metadata-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metadata-value {
+            font-weight: 600;
+            color: #1a202c;
+            margin-top: 4px;
+        }
+
+        .key-points {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-points li {
+            padding: 8px 12px;
+            background: white;
+            border-left: 3px solid #667eea;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .issues-list, .suggestions-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .issues-list li {
+            padding: 8px 12px;
+            background: #fee2e2;
+            border-left: 3px solid #dc2626;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #991b1b;
+        }
+
+        .suggestions-list li {
+            padding: 8px 12px;
+            background: #dbeafe;
+            border-left: 3px solid #2563eb;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #1e40af;
+        }
+
+        .quality-score-display {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .quality-score-number {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .quality-score-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .raw-response {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #fecaca;
+            margin: 20px 0;
+        }
+
+        .collapsible {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible::before {
+            content: '▼ ';
+            font-size: 0.8rem;
+        }
+
+        .collapsible.collapsed::before {
+            content: '▶ ';
+        }
+
+        .collapsible-content {
+            margin-top: 10px;
+        }
+
+        .collapsible-content.hidden {
+            display: none;
+        }
+
+        @media (max-width: 968px) {
+            .agent-info {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .pipeline-results {
+                grid-template-columns: 1fr;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤝 Multi-Agent Collaboration System</h1>
+            <p class="subtitle">Two AI agents working together: Generator creates, Validator refines</p>
+        </div>
+
+        <div class="agent-info">
+            <div class="agent-card">
+                <div class="agent-number">1</div>
+                <div class="agent-name">🎨 Content Generator</div>
+                <div class="agent-model" id="agent1Model">Model: Loading...</div>
+                <div class="agent-role">Creates creative content based on your task</div>
+            </div>
+
+            <div class="flow-arrow">→</div>
+
+            <div class="agent-card">
+                <div class="agent-number">2</div>
+                <div class="agent-name">🔍 Content Validator</div>
+                <div class="agent-model" id="agent2Model">Model: Loading...</div>
+                <div class="agent-role">Validates quality and refines the output</div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label for="taskInput">📝 What would you like the agents to create?</label>
+                <textarea id="taskInput" placeholder="Enter your task here... (e.g., 'Write a blog post about the future of AI in healthcare')"></textarea>
+            </div>
+
+            <div class="examples-section">
+                <label>💡 Or choose from examples:</label>
+                <div class="examples-grid" id="examplesGrid">
+                    <div class="example-category">
+                        <div class="category-title">Loading examples...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="runAgentsBtn" class="btn btn-primary">
+                    <span>🚀</span>
+                    <span>Run Agent Pipeline</span>
+                </button>
+                <button id="clearBtn" class="btn btn-secondary">
+                    <span>🗑️</span>
+                    <span>Clear</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <div class="loading-text" id="loadingText">Running agent pipeline...</div>
+            </div>
+        </div>
+
+        <div class="results-section" id="results">
+            <div class="results-header">
+                <div class="results-title">Pipeline Execution Results</div>
+            </div>
+
+            <div class="execution-summary" id="executionSummary"></div>
+
+            <div class="pipeline-results" id="pipelineResults"></div>
+        </div>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const examplesGrid = document.getElementById('examplesGrid');
+        const runAgentsBtn = document.getElementById('runAgentsBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const loading = document.getElementById('loading');
+        const loadingText = document.getElementById('loadingText');
+        const results = document.getElementById('results');
+        const executionSummary = document.getElementById('executionSummary');
+        const pipelineResults = document.getElementById('pipelineResults');
+
+        // Load agent configurations
+        async function loadAgentInfo() {
+            try {
+                const response = await fetch('/api/agents');
+                const data = await response.json();
+
+                document.getElementById('agent1Model').textContent =
+                    `Model: ${data.agents.generator.model} | Temp: ${data.agents.generator.temperature}`;
+                document.getElementById('agent2Model').textContent =
+                    `Model: ${data.agents.validator.model} | Temp: ${data.agents.validator.temperature}`;
+            } catch (error) {
+                console.error('Failed to load agent info:', error);
+            }
+        }
+
+        // Load example tasks
+        async function loadExamples() {
+            try {
+                const response = await fetch('/api/example-tasks');
+                const examples = await response.json();
+
+                examplesGrid.innerHTML = '';
+
+                examples.forEach(category => {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'example-category';
+
+                    const title = document.createElement('div');
+                    title.className = 'category-title';
+                    title.textContent = category.category;
+                    categoryDiv.appendChild(title);
+
+                    category.tasks.forEach(task => {
+                        const item = document.createElement('div');
+                        item.className = 'example-item';
+                        item.textContent = task;
+                        item.onclick = () => {
+                            taskInput.value = task;
+                        };
+                        categoryDiv.appendChild(item);
+                    });
+
+                    examplesGrid.appendChild(categoryDiv);
+                });
+            } catch (error) {
+                console.error('Failed to load examples:', error);
+            }
+        }
+
+        // Run the agent pipeline
+        async function runAgentPipeline() {
+            const task = taskInput.value.trim();
+
+            if (!task) {
+                alert('Please enter a task or select an example');
+                return;
+            }
+
+            runAgentsBtn.disabled = true;
+            clearBtn.disabled = true;
+            loading.style.display = 'block';
+            results.style.display = 'none';
+
+            loadingText.textContent = 'Agent 1 (Generator) is working...';
+
+            try {
+                const response = await fetch('/api/run-agents', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ task })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    displayResults(data);
+                    results.style.display = 'block';
+                } else {
+                    alert(`Error: ${data.error || 'Unknown error'}`);
+                }
+            } catch (error) {
+                alert('Failed to run agent pipeline');
+                console.error('Request failed:', error);
+            } finally {
+                runAgentsBtn.disabled = false;
+                clearBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        // Display results
+        function displayResults(data) {
+            // Display execution summary
+            const summary = data.summary;
+            const validation = data.pipeline.step2_validator.validation;
+
+            const statusBadgeClass =
+                validation.validation_status === 'pass' ? 'badge-pass' :
+                validation.validation_status === 'needs_improvement' ? 'badge-needs-improvement' :
+                'badge-fail';
+
+            executionSummary.innerHTML = `
+                <div class="summary-metric">
+                    <div class="metric-value">${summary.totalExecutionTime}ms</div>
+                    <div class="metric-label">Total Time</div>
+                </div>
+                <div class="summary-metric">
+                    <div class="metric-value">${summary.totalTokensUsed.input + summary.totalTokensUsed.output}</div>
+                    <div class="metric-label">Total Tokens</div>
+                </div>
+                <div class="summary-metric">
+                    <div class="metric-value">${validation.quality_score || 'N/A'}</div>
+                    <div class="metric-label">Quality Score</div>
+                </div>
+                <div class="summary-metric">
+                    <div class="metric-value">
+                        <div class="validation-badge ${statusBadgeClass}">
+                            ${validation.validation_status?.toUpperCase() || 'UNKNOWN'}
+                        </div>
+                    </div>
+                    <div class="metric-label">Status</div>
+                </div>
+            `;
+
+            // Display pipeline results
+            pipelineResults.innerHTML = '';
+
+            // Agent 1 Card
+            const agent1Card = createAgent1Card(data.pipeline.step1_generator);
+            pipelineResults.appendChild(agent1Card);
+
+            // Agent 2 Card
+            const agent2Card = createAgent2Card(data.pipeline.step2_validator);
+            pipelineResults.appendChild(agent2Card);
+        }
+
+        function createAgent1Card(step1Data) {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+
+            const output = step1Data.output;
+
+            card.innerHTML = `
+                <div class="result-header agent1-header">
+                    <span>🎨 Agent 1: Content Generator</span>
+                    <span class="result-time">${step1Data.result.responseTime}ms</span>
+                </div>
+                <div class="result-content">
+                    <div class="content-section">
+                        <div class="section-title">Generated Title</div>
+                        <div class="content-box">
+                            <strong>${output?.title || 'No title generated'}</strong>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div class="section-title">Generated Content</div>
+                        <div class="content-box">
+                            ${output?.content || 'No content generated'}
+                        </div>
+                    </div>
+
+                    ${output?.metadata ? `
+                    <div class="content-section">
+                        <div class="section-title">Metadata</div>
+                        <div class="metadata-grid">
+                            <div class="metadata-item">
+                                <div class="metadata-label">Word Count</div>
+                                <div class="metadata-value">${output.metadata.word_count || 'N/A'}</div>
+                            </div>
+                            <div class="metadata-item">
+                                <div class="metadata-label">Tone</div>
+                                <div class="metadata-value">${output.metadata.tone || 'N/A'}</div>
+                            </div>
+                        </div>
+                        ${output.metadata.key_points && output.metadata.key_points.length > 0 ? `
+                        <div style="margin-top: 15px;">
+                            <div class="metadata-label" style="margin-bottom: 8px;">Key Points</div>
+                            <ul class="key-points">
+                                ${output.metadata.key_points.map(point => `<li>${point}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ` : ''}
+                    </div>
+                    ` : ''}
+
+                    <div class="content-section">
+                        <div class="section-title collapsible" onclick="toggleCollapsible(this)">Raw Response</div>
+                        <div class="collapsible-content hidden">
+                            <div class="raw-response">${escapeHtml(step1Data.result.rawResponse)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function createAgent2Card(step2Data) {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+
+            const validation = step2Data.validation;
+
+            card.innerHTML = `
+                <div class="result-header agent2-header">
+                    <span>🔍 Agent 2: Content Validator</span>
+                    <span class="result-time">${step2Data.result.responseTime}ms</span>
+                </div>
+                <div class="result-content">
+                    ${validation?.quality_score ? `
+                    <div class="quality-score-display">
+                        <div class="quality-score-number">${validation.quality_score}/100</div>
+                        <div class="quality-score-label">Quality Score</div>
+                    </div>
+                    ` : ''}
+
+                    ${validation?.validation_notes ? `
+                    <div class="content-section">
+                        <div class="section-title">Validation Notes</div>
+                        <div class="content-box">
+                            ${validation.validation_notes}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    ${validation?.issues && validation.issues.length > 0 ? `
+                    <div class="content-section">
+                        <div class="section-title">Issues Found</div>
+                        <ul class="issues-list">
+                            ${validation.issues.map(issue => `<li>${issue}</li>`).join('')}
+                        </ul>
+                    </div>
+                    ` : ''}
+
+                    ${validation?.suggestions && validation.suggestions.length > 0 ? `
+                    <div class="content-section">
+                        <div class="section-title">Suggestions for Improvement</div>
+                        <ul class="suggestions-list">
+                            ${validation.suggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+                        </ul>
+                    </div>
+                    ` : ''}
+
+                    ${validation?.refined_content ? `
+                    <div class="content-section">
+                        <div class="section-title collapsible" onclick="toggleCollapsible(this)">Refined Content</div>
+                        <div class="collapsible-content hidden">
+                            <div class="content-box">
+                                <strong>${validation.refined_content.title || ''}</strong>
+                                <br><br>
+                                ${validation.refined_content.content || ''}
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="content-section">
+                        <div class="section-title collapsible" onclick="toggleCollapsible(this)">Raw Response</div>
+                        <div class="collapsible-content hidden">
+                            <div class="raw-response">${escapeHtml(step2Data.result.rawResponse)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function toggleCollapsible(element) {
+            element.classList.toggle('collapsed');
+            const content = element.nextElementSibling;
+            if (content && content.classList.contains('collapsible-content')) {
+                content.classList.toggle('hidden');
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Clear results
+        function clearResults() {
+            taskInput.value = '';
+            results.style.display = 'none';
+        }
+
+        // Event listeners
+        runAgentsBtn.addEventListener('click', runAgentPipeline);
+        clearBtn.addEventListener('click', clearResults);
+
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.ctrlKey && !runAgentsBtn.disabled) {
+                runAgentPipeline();
+            }
+        });
+
+        // Initialize
+        loadAgentInfo();
+        loadExamples();
+
+        // Set default task
+        taskInput.value = "Write a short blog post about the benefits of meditation for busy professionals";
+    </script>
+</body>
+</html>
+
