@@ -43,23 +43,67 @@ cd day8
 npm install
 ```
 
-### 2. Run the Demo
+### 2. Run the Web UI (Recommended)
 
 ```bash
-# Run the simplified MCP demo
+# Start the web server
 npm start
+
+# Then visit http://localhost:3008 in your browser
+```
+
+**Features:**
+- 🔗 Interactive connection management
+- 🔍 Real-time tool discovery
+- 🧪 Live tool testing with parameter forms
+- 📊 Connection status monitoring
+- 📋 Detailed tool documentation
+
+### 3. Alternative: Command Line Demo
+
+```bash
+# Run the console demo
+npm run demo
 
 # Or run directly
 node simple-mcp-demo.js
 ```
 
-### 3. Run Tests
+### 4. Run Tests
 
 ```bash
 npm test
 ```
 
 ## Available Demos
+
+### Web UI Demo (`npm start`)
+
+A complete web-based interface for testing MCP integration:
+
+```bash
+npm start
+# Open http://localhost:3008 in your browser
+```
+
+**Web UI Features:**
+- **Connection Panel**: Connect/disconnect from MCP server with real-time status
+- **Server Info Display**: Shows server name, version, capabilities, and tool count
+- **Interactive Tool Discovery**: Click to discover available tools
+- **Tool Cards**: Each tool displayed with description and parameter details
+- **Parameter Forms**: Dynamic forms for each tool with validation
+- **Live Execution**: Execute tools directly from the web interface
+- **Results Display**: Formatted JSON responses with success/error handling
+- **Status Log**: Real-time log of all operations and API calls
+
+**API Endpoints:**
+- `POST /api/mcp/connect` - Connect to MCP server
+- `POST /api/mcp/disconnect` - Disconnect from server
+- `GET /api/mcp/status` - Get connection status
+- `POST /api/mcp/tools/discover` - Discover available tools
+- `GET /api/mcp/tools` - Get list of discovered tools
+- `POST /api/mcp/tools/execute` - Execute a specific tool
+- `GET /api/mcp/tools/:name` - Get tool schema details
 
 ### Simple MCP Demo (`simple-mcp-demo.js`)
 

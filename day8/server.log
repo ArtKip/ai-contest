@@ -1,0 +1,27 @@
+🚀 Day 8 - MCP Integration Web UI running on port 3008
+📱 Visit http://localhost:3008 to test MCP integration
+🔧 API endpoints available at http://localhost:3008/api/
+🔗 Auto-connecting to MCP server...
+🔗 Connecting to MCP server...
+✅ Connected to MCP server!
+📋 Server Info: {
+  "name": "demo-mcp-server",
+  "version": "1.0.0",
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  }
+}
+🔍 Discovering available tools...
+📦 Discovered 5 tools!
+✅ Auto-connected and discovered 5 tools
+🧪 Executing tool: calculate with parameters: { expression: '25 * 4 + 10' }
+🧪 Calling tool: calculate
+📋 Parameters: {
+  "expression": "25 * 4 + 10"
+}
+✅ Tool response: {
+  "result": 110,
+  "expression": "25 * 4 + 10"
+}
