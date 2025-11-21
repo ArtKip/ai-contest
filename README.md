@@ -6,6 +6,11 @@ A progressive AI agent implementation showcasing different capabilities across m
 
 - **day1/**: Basic AI agent with simple HTTP API and Claude integration
 - **day2/**: Enhanced agent with structured JSON responses and rich metadata
+- **day3/**: Tool integration and function calling capabilities
+- **day4/**: Streaming responses with real-time updates
+- **day5/**: Conversation context and memory management
+- **day6/**: Multi-agent collaboration with validation pipeline
+- **day7/**: Dialogue compression for efficient token usage
 
 ## Day-by-Day Progress
 
@@ -13,7 +18,7 @@ A progressive AI agent implementation showcasing different capabilities across m
 **Goal**: "The agent correctly accepts user input, makes a call to the selected model/tool, and returns the response."
 
 - ✅ HTTP API with `/api/ask` endpoint
-- ✅ Web interface for chat interaction  
+- ✅ Web interface for chat interaction
 - ✅ Anthropic Claude API integration
 - ✅ Error handling and retry logic
 
@@ -23,12 +28,26 @@ A progressive AI agent implementation showcasing different capabilities across m
 **Goal**: "The response from the LLM can be correctly parsed by your application."
 
 - ✅ Structured JSON response format with metadata
-- ✅ Confidence levels (high/medium/low) 
+- ✅ Confidence levels (high/medium/low)
 - ✅ Response types (factual/opinion/creative/unknown)
 - ✅ Source attribution and follow-up suggestions
 - ✅ Rich web interface with interactive elements
 
 [View Day 2 Implementation →](./day2/)
+
+### Day 7: Dialogue Compression ✅
+**Goal**: "The agent works with compressed history and can still perform the same tasks while using fewer tokens."
+
+- ✅ Automatic conversation history compression
+- ✅ Configurable compression threshold (every N messages)
+- ✅ Intelligent summarization that preserves context
+- ✅ Token usage tracking and comparison
+- ✅ Real-time analytics dashboard
+- ✅ Toggle between compressed and full history modes
+- ✅ Compression event logging
+- ✅ Side-by-side comparison metrics
+
+[View Day 7 Implementation →](./day7/)
 
 ## Quick Start
 
@@ -45,11 +64,26 @@ npm start
 
 ### Run Day 2 (Structured Responses)
 ```bash
-cd day2  
+cd day2
 npm install
 export ANTHROPIC_API_KEY="your_key_here"
 npm start
 # Visit http://localhost:3000
+```
+
+### Run Day 7 (Dialogue Compression)
+```bash
+cd day7
+npm install
+export ANTHROPIC_API_KEY="your_key_here"
+npm start
+# Visit http://localhost:3007
+
+# Run automated tests
+npm test
+
+# Run comparison demo
+npm run demo
 ```
 
 ## Key Features Comparison
@@ -86,7 +120,7 @@ Send a question to the AI agent.
 {
   "answer": "The capital of France is Paris, located in the north-central part of the country.",
   "confidence": "high",
-  "type": "factual", 
+  "type": "factual",
   "sources": ["general knowledge"],
   "follow_up": "Would you like to know more about Paris's history?",
   "question": "What is the capital of France?",
