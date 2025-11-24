@@ -1,0 +1,27 @@
+{
+  "name": "ai-agent-day9",
+  "version": "1.0.0",
+  "description": "Day 9 - Custom MCP Weather Tool",
+  "main": "weather-server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "node weather-server.js",
+    "client": "node weather-client.js",
+    "demo": "node weather-demo.js",
+    "dev": "nodemon server.js",
+    "test": "node test-weather.js"
+  },
+  "keywords": ["ai", "agent", "mcp", "weather", "custom-tool"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
