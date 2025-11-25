@@ -1,0 +1,29 @@
+{
+  "file": {
+    "success": true,
+    "filename": "comprehensive_guide.html",
+    "filePath": "outputs/comprehensive_guide.html",
+    "absolutePath": "/Users/arturkipel/Documents/src/ai-contest/day10/outputs/comprehensive_guide.html",
+    "format": "html",
+    "directory": "outputs",
+    "fileSize": 2436,
+    "encoding": "utf8",
+    "operation": "overwritten",
+    "contentLength": 1368,
+    "formattedLength": 2436,
+    "metadata": {
+      "title": "Comprehensive Development Guide",
+      "createdBy": "Documentation Pipeline",
+      "type": "guide"
+    },
+    "createdAt": "2025-11-25T20:32:15.062Z",
+    "lastModified": "2025-11-25T20:32:15.062Z",
+    "checksum": "25ef54b"
+  },
+  "metadata": {
+    "title": "Comprehensive Development Guide",
+    "createdBy": "Documentation Pipeline",
+    "type": "guide"
+  },
+  "generatedAt": "2025-11-25T20:32:15.062Z"
+}

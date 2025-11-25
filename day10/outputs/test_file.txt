@@ -1,0 +1,25 @@
+{
+  "file": {
+    "success": true,
+    "filename": "test_file.txt",
+    "filePath": "outputs/test_file.txt",
+    "absolutePath": "/Users/arturkipel/Documents/src/ai-contest/day10/outputs/test_file.txt",
+    "format": "txt",
+    "directory": "outputs",
+    "fileSize": 183,
+    "encoding": "utf8",
+    "operation": "created",
+    "contentLength": 16,
+    "formattedLength": 183,
+    "metadata": {
+      "test": true
+    },
+    "createdAt": "2025-11-25T20:24:25.552Z",
+    "lastModified": "2025-11-25T20:24:25.552Z",
+    "checksum": "1a6bb157"
+  },
+  "metadata": {
+    "test": true
+  },
+  "generatedAt": "2025-11-25T20:24:25.552Z"
+}

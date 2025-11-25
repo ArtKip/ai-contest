@@ -1,0 +1,3 @@
+==================================================\ncreatedBy: Quick Summary Pipeline\ntype: quick_note\n==================================================\n\nDatabases are str ct red collections of data that can be easily accessed, managed, and  pdated.
+                
+                Types of...\n\n--- Generated on 2025-11-25T20:32:15.064Z ---

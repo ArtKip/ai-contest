@@ -1,0 +1,1 @@
+# research_report.md\n\n## Metadata\n\n- **createdBy**: Research Pipeline\n- **type**: research_report\n\n## Content\n\n**Principles:** \n\n**BestPractices:** \n\n---\n\n*Generated on 2025-11-25T20:32:15.058Z*\n

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM-Driven MCP Orchestration Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .input-section {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .output-section {
+            background: #fefefe;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .request-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .request-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .mode-selector {
+            margin: 20px 0;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .mode-btn {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .mode-btn.active {
+            background: #4facfe;
+            color: white;
+            border-color: #4facfe;
+        }
+
+        .mode-btn:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .mode-btn.active:hover {
+            background: #3182ce;
+        }
+
+        .example-requests {
+            margin: 20px 0;
+        }
+
+        .example-btn {
+            display: block;
+            width: 100%;
+            margin: 8px 0;
+            padding: 10px 15px;
+            background: #edf2f7;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .example-btn:hover {
+            background: #e2e8f0;
+            border-color: #cbd5e0;
+        }
+
+        .test-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 20px;
+        }
+
+        .test-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .test-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .execution-log {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .log-entry {
+            margin: 8px 0;
+            padding: 8px 0;
+        }
+
+        .log-step {
+            color: #63b3ed;
+            font-weight: 600;
+        }
+
+        .log-reasoning {
+            color: #68d391;
+            margin-left: 20px;
+        }
+
+        .log-tool {
+            color: #fbb6ce;
+            font-weight: 500;
+        }
+
+        .log-result {
+            color: #faf089;
+            margin-left: 20px;
+        }
+
+        .log-adaptation {
+            color: #fc8181;
+            font-weight: 600;
+            background: rgba(252, 129, 129, 0.1);
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+
+        .server-status {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .server-card {
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+        }
+
+        .server-card.online {
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .server-card.offline {
+            border-color: #f56565;
+            background: #fffbfa;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .status-indicator.online {
+            background: #48bb78;
+        }
+
+        .status-indicator.offline {
+            background: #f56565;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .clear-btn {
+            padding: 8px 15px;
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .clear-btn:hover {
+            background: #cbd5e0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .mode-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 LLM-Driven MCP Orchestration</h1>
+            <p>Test intelligent tool selection and adaptive workflows in real-time</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2 class="section-title">
+                    🎯 Test Input
+                </h2>
+
+                <div class="server-status">
+                    <div class="server-card" id="search-status">
+                        <span class="status-indicator offline" id="search-indicator"></span>
+                        <div>SearchDocs</div>
+                        <div style="font-size: 0.9em; color: #718096;">:3001</div>
+                    </div>
+                    <div class="server-card" id="summarize-status">
+                        <span class="status-indicator offline" id="summarize-indicator"></span>
+                        <div>Summarize</div>
+                        <div style="font-size: 0.9em; color: #718096;">:3002</div>
+                    </div>
+                    <div class="server-card" id="save-status">
+                        <span class="status-indicator offline" id="save-indicator"></span>
+                        <div>SaveToFile</div>
+                        <div style="font-size: 0.9em; color: #718096;">:3003</div>
+                    </div>
+                </div>
+
+                <label for="request-input" style="font-weight: 500; margin-bottom: 8px; display: block;">
+                    Enter your request:
+                </label>
+                <textarea 
+                    id="request-input" 
+                    class="request-input"
+                    placeholder="e.g., Find comprehensive information about API security best practices and create a detailed report"
+                ></textarea>
+
+                <div class="mode-selector">
+                    <label style="font-weight: 500; margin-bottom: 8px; display: block;">
+                        Orchestration Mode:
+                    </label>
+                    <div class="mode-buttons">
+                        <button class="mode-btn active" data-mode="intelligent">
+                            🧠 Intelligent
+                            <div style="font-size: 0.8em; margin-top: 4px; opacity: 0.8;">
+                                LLM decides tools dynamically
+                            </div>
+                        </button>
+                        <button class="mode-btn" data-mode="adaptive">
+                            🔄 Adaptive
+                            <div style="font-size: 0.8em; margin-top: 4px; opacity: 0.8;">
+                                Workflow adapts based on results
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="example-requests">
+                    <label style="font-weight: 500; margin-bottom: 8px; display: block;">
+                        Example Requests:
+                    </label>
+                    <button class="example-btn" onclick="setRequest('Find comprehensive information about REST API security best practices')">
+                        🔍 Comprehensive API security research
+                    </button>
+                    <button class="example-btn" onclick="setRequest('Quick overview of database optimization techniques')">
+                        ⚡ Quick database optimization overview
+                    </button>
+                    <button class="example-btn" onclick="setRequest('Research microservices architecture and create detailed analysis report')">
+                        📊 Detailed microservices analysis
+                    </button>
+                    <button class="example-btn" onclick="setRequest('What are modern authentication methods? Save as HTML guide')">
+                        🔐 Authentication methods guide
+                    </button>
+                    <button class="example-btn" onclick="setRequest('Compare JavaScript frameworks and summarize key differences')">
+                        ⚖️ JavaScript frameworks comparison
+                    </button>
+                </div>
+
+                <button class="test-btn" id="test-btn" onclick="runTest()">
+                    🚀 Run LLM Orchestration Test
+                </button>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="tests-run">0</div>
+                        <div class="stat-label">Tests Run</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avg-steps">0</div>
+                        <div class="stat-label">Avg Steps</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="adaptations">0</div>
+                        <div class="stat-label">Adaptations</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <h2 class="section-title">
+                    📊 Execution Log
+                    <button class="clear-btn" onclick="clearLog()">Clear</button>
+                </h2>
+                <div class="execution-log" id="execution-log">
+                    <div style="color: #a0aec0; text-align: center; margin-top: 50px;">
+                        🧠 Ready to test LLM-driven MCP orchestration!
+                        <br><br>
+                        Enter a request and click "Run Test" to see how the LLM intelligently selects and orchestrates MCP tools.
+                        <br><br>
+                        <span style="color: #68d391;">✓</span> Dynamic tool selection
+                        <br>
+                        <span style="color: #68d391;">✓</span> Adaptive workflows
+                        <br>
+                        <span style="color: #68d391;">✓</span> Context-aware parameters
+                        <br>
+                        <span style="color: #68d391;">✓</span> Real-time reasoning display
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "file": {
+    "success": true,
+    "filename": "research_javascript best practices.html",
+    "filePath": "outputs/research_javascript best practices.html",
+    "absolutePath": "/Users/arturkipel/Documents/src/ai-contest/day10/outputs/research_javascript best practices.html",
+    "format": "html",
+    "directory": "outputs",
+    "fileSize": 3057,
+    "encoding": "utf8",
+    "operation": "created",
+    "contentLength": 2923,
+    "formattedLength": 3057,
+    "metadata": {
+      "agent": "ResearchBot",
+      "approach": "thorough_research",
+      "keywords": [
+        {
+          "word": "    s       s      s                            s       w                s      s               s                                                        s                            s               s                            s                            w         s   s     w                            s                s     ss s           s                        s                                                      s s   s             s                                                                s                     s   s         s                            s        s                    s     w              s         s                              s                                                           ss s                              s                                          s          s                     s  s              s  s                                    s                                                    s w                                w       s                      s                    s   s                                                                     s                                                                             s                                                                                                         s                            s                                    s   s                                              s               s    s                            s s   s          s     s                               s                             s             s      s        s w    s                                     s          ss      ss     s        s s         s         s                     s                                  s            s                    s              s s                   s                                          ss                                                                                         s             s            w                        s     s             s    s     s            s                         s    s       s             s         s                 s s                       s                 s                s            w  s                                                                             s             w     s   s                                                                                                          s                   s                                    s                                                                              s                                                                                                                                 s    s s                          s        s           s                        s s             s                                  s                             ss            s                             w      ws",
+          "count": 1
+        }
+      ]
+    },
+    "createdAt": "2025-11-25T21:03:25.880Z",
+    "lastModified": "2025-11-25T21:03:25.880Z",
+    "checksum": "684a2cf3"
+  },
+  "metadata": {
+    "agent": "ResearchBot",
+    "approach": "thorough_research",
+    "keywords": [
+      {
+        "word": "    s       s      s                            s       w                s      s               s                                                        s                            s               s                            s                            w         s   s     w                            s                s     ss s           s                        s                                                      s s   s             s                                                                s                     s   s         s                            s        s                    s     w              s         s                              s                                                           ss s                              s                                          s          s                     s  s              s  s                                    s                                                    s w                                w       s                      s                    s   s                                                                     s                                                                             s                                                                                                         s                            s                                    s   s                                              s               s    s                            s s   s          s     s                               s                             s             s      s        s w    s                                     s          ss      ss     s        s s         s         s                     s                                  s            s                    s              s s                   s                                          ss                                                                                         s             s            w                        s     s             s    s     s            s                         s    s       s             s         s                 s s                       s                 s                s            w  s                                                                             s             w     s   s                                                                                                          s                   s                                    s                                                                              s                                                                                                                                 s    s s                          s        s           s                        s s             s                                  s                             ss            s                             w      ws",
+        "count": 1
+      }
+    ]
+  },
+  "generatedAt": "2025-11-25T21:03:25.880Z"
+}

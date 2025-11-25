@@ -1,0 +1,27 @@
+{
+  "file": {
+    "success": true,
+    "filename": "research_report.md",
+    "filePath": "outputs/research_report.md",
+    "absolutePath": "/Users/arturkipel/Documents/src/ai-contest/day10/outputs/research_report.md",
+    "format": "md",
+    "directory": "outputs",
+    "fileSize": 211,
+    "encoding": "utf8",
+    "operation": "overwritten",
+    "contentLength": 39,
+    "formattedLength": 211,
+    "metadata": {
+      "createdBy": "Research Pipeline",
+      "type": "research_report"
+    },
+    "createdAt": "2025-11-25T20:32:15.059Z",
+    "lastModified": "2025-11-25T20:32:15.059Z",
+    "checksum": "764d8406"
+  },
+  "metadata": {
+    "createdBy": "Research Pipeline",
+    "type": "research_report"
+  },
+  "generatedAt": "2025-11-25T20:32:15.059Z"
+}
