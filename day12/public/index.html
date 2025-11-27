@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Agent - Day 12</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            grid-template-rows: auto 1fr auto;
+            gap: 20px;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 1.2em;
+        }
+
+        .main-interface {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .voice-area {
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+
+        .microphone-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .microphone-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 3em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .microphone-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        .microphone-btn.recording {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .audio-visualization {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .audio-visualization.active {
+            opacity: 1;
+            animation: ripple 2s infinite;
+        }
+
+        @keyframes ripple {
+            0% {
+                width: 140px;
+                height: 140px;
+                opacity: 1;
+            }
+            100% {
+                width: 200px;
+                height: 200px;
+                opacity: 0;
+            }
+        }
+
+        .voice-status {
+            font-size: 1.1em;
+            color: #4a5568;
+            margin-bottom: 20px;
+            min-height: 1.5em;
+        }
+
+        .transcription {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 60px;
+            color: #4a5568;
+            font-style: italic;
+            text-align: left;
+        }
+
+        .transcription.listening {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .response-area {
+            flex: 1;
+            padding: 30px;
+            background: white;
+            overflow-y: auto;
+        }
+
+        .conversation-history {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .conversation-item {
+            margin-bottom: 25px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .conversation-input {
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #38b2ac;
+        }
+
+        .conversation-input .label {
+            font-size: 12px;
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .conversation-input .text {
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        .conversation-response {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            padding: 15px 20px;
+            border-radius: 15px;
+            border-left: 4px solid #f56565;
+        }
+
+        .conversation-response .label {
+            font-size: 12px;
+            color: #2d3748;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .conversation-response .text {
+            color: #2d3748;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .conversation-response .meta {
+            font-size: 11px;
+            color: #a0aec0;
+            margin-top: 8px;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .stats-section {
+            margin-bottom: 30px;
+        }
+
+        .stats-section h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+        }
+
+        .stats-section h3::before {
+            content: "📊";
+            margin-right: 8px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .stat-label {
+            color: #718096;
+        }
+
+        .stat-value {
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .examples-section h3::before {
+            content: "💡";
+        }
+
+        .example-item {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .example-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .controls-section h3::before {
+            content: "🎛️";
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: transform 0.2s;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+        }
+
+        .footer {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .error-message {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #e53e3e;
+        }
+
+        .success-message {
+            background: #c6f6d5;
+            color: #2f855a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #38a169;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+            
+            .voice-area {
+                padding: 20px;
+            }
+            
+            .microphone-btn {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5em;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .header p {
+                font-size: 1em;
+            }
+        }
+
+        /* Browser compatibility notice */
+        .browser-warning {
+            background: #ffeaa7;
+            color: #2d3436;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #fdcb6e;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎤 Voice Agent</h1>
+            <p>Speak naturally and get intelligent responses</p>
+        </div>
+
+        <div class="main-interface">
+            <div class="voice-area">
+                <div class="browser-warning" id="browserWarning">
+                    ⚠️ Voice recognition may not be supported in your browser. Please use Chrome, Edge, or Safari for the best experience.
+                </div>
+                
+                <div class="microphone-container">
+                    <button class="microphone-btn" id="microphoneBtn" title="Click to start voice recording">
+                        🎤
+                    </button>
+                    <div class="audio-visualization" id="audioVisualization"></div>
+                </div>
+                
+                <div class="voice-status" id="voiceStatus">
+                    Click the microphone to start speaking
+                </div>
+                
+                <div class="transcription" id="transcription">
+                    Your voice input will appear here...
+                </div>
+            </div>
+
+            <div class="response-area">
+                <h3 style="color: #4a5568; margin-bottom: 20px;">💬 Conversation</h3>
+                <div class="conversation-history" id="conversationHistory">
+                    <div class="conversation-item">
+                        <div class="conversation-response">
+                            <div class="label">Voice Agent</div>
+                            <div class="text">Hello! I'm your voice assistant. I can help with calculations, definitions, jokes, and general conversation. Click the microphone and start speaking!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="stats-section">
+                <h3>Statistics</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Conversations:</span>
+                    <span class="stat-value" id="conversationCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Avg Response Time:</span>
+                    <span class="stat-value" id="avgResponseTime">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Session:</span>
+                    <span class="stat-value" id="sessionId">-</span>
+                </div>
+            </div>
+
+            <div class="examples-section">
+                <h3>Try Saying</h3>
+                <div class="example-item" onclick="simulateVoiceInput(this.textContent)">
+                    "Calculate 25 times 37"
+                </div>
+                <div class="example-item" onclick="simulateVoiceInput(this.textContent)">
+                    "Define artificial intelligence"
+                </div>
+                <div class="example-item" onclick="simulateVoiceInput(this.textContent)">
+                    "Tell me a joke"
+                </div>
+                <div class="example-item" onclick="simulateVoiceInput(this.textContent)">
+                    "What can you do?"
+                </div>
+                <div class="example-item" onclick="simulateVoiceInput(this.textContent)">
+                    "What time is it?"
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3>Controls</h3>
+                <button class="btn" onclick="refreshStats()">📊 Refresh Stats</button>
+                <button class="btn secondary" onclick="clearHistory()">🗑️ Clear History</button>
+                <button class="btn secondary" onclick="testVoiceAgent()">🧪 Run Tests</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Day 12 - Voice Agent: Speech → LLM → Text Pipeline</p>
+        </div>
+    </div>
+
+    <script>
+        class VoiceAgentUI {
+            constructor() {
+                this.isRecording = false;
+                this.recognition = null;
+                this.conversationCount = 0;
+                
+                this.initSpeechRecognition();
+                this.initEventListeners();
+                this.refreshStats();
+                
+                console.log('🎤 Voice Agent UI initialized');
+            }
+
+            initSpeechRecognition() {
+                // Check for speech recognition support
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    document.getElementById('browserWarning').style.display = 'block';
+                    console.warn('Speech recognition not supported');
+                    return;
+                }
+
+                // Initialize speech recognition
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                this.recognition = new SpeechRecognition();
+                
+                this.recognition.continuous = false;
+                this.recognition.interimResults = true;
+                this.recognition.lang = 'en-US';
+                
+                // Event handlers
+                this.recognition.onstart = () => {
+                    this.isRecording = true;
+                    this.updateUI();
+                    this.updateStatus('Listening... speak now');
+                    document.getElementById('audioVisualization').classList.add('active');
+                };
+
+                this.recognition.onresult = (event) => {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript;
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+
+                    // Update transcription display
+                    const transcriptionEl = document.getElementById('transcription');
+                    transcriptionEl.textContent = finalTranscript || interimTranscript || 'Listening...';
+                    
+                    if (finalTranscript) {
+                        this.processVoiceInput(finalTranscript);
+                    }
+                };
+
+                this.recognition.onend = () => {
+                    this.isRecording = false;
+                    this.updateUI();
+                    document.getElementById('audioVisualization').classList.remove('active');
+                };
+
+                this.recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    this.isRecording = false;
+                    this.updateUI();
+                    this.updateStatus(`Error: ${event.error}`);
+                    this.showMessage(`Speech recognition error: ${event.error}`, 'error');
+                };
+            }
+
+            initEventListeners() {
+                const micBtn = document.getElementById('microphoneBtn');
+                
+                micBtn.addEventListener('click', () => {
+                    if (this.isRecording) {
+                        this.stopRecording();
+                    } else {
+                        this.startRecording();
+                    }
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (event) => {
+                    if (event.code === 'Space' && event.ctrlKey) {
+                        event.preventDefault();
+                        if (this.isRecording) {
+                            this.stopRecording();
+                        } else {
+                            this.startRecording();
+                        }
+                    }
+                });
+            }
+
+            startRecording() {
+                if (!this.recognition) {
+                    this.showMessage('Speech recognition not available', 'error');
+                    return;
+                }
+
+                try {
+                    this.recognition.start();
+                    this.updateStatus('Initializing microphone...');
+                    document.getElementById('transcription').classList.add('listening');
+                } catch (error) {
+                    console.error('Failed to start recording:', error);
+                    this.showMessage('Failed to start voice recording', 'error');
+                }
+            }
+
+            stopRecording() {
+                if (this.recognition && this.isRecording) {
+                    this.recognition.stop();
+                    this.updateStatus('Processing...');
+                    document.getElementById('transcription').classList.remove('listening');
+                }
+            }
+
+            updateUI() {
+                const micBtn = document.getElementById('microphoneBtn');
+                const transcriptionEl = document.getElementById('transcription');
+                
+                if (this.isRecording) {
+                    micBtn.classList.add('recording');
+                    micBtn.title = 'Click to stop recording';
+                    transcriptionEl.classList.add('listening');
+                } else {
+                    micBtn.classList.remove('recording');
+                    micBtn.title = 'Click to start recording';
+                    transcriptionEl.classList.remove('listening');
+                }
+            }
+
+            updateStatus(message) {
+                document.getElementById('voiceStatus').textContent = message;
+            }
+
+            async processVoiceInput(spokenText) {
+                this.updateStatus('Processing your request...');
+                
+                try {
+                    const response = await fetch('/api/voice/process', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            spokenText,
+                            metadata: {
+                                timestamp: new Date().toISOString()
+                            }
+                        }),
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.addConversation(spokenText, data.response, data.analysis, data.processingTime);
+                        this.updateStatus('Ready for next command');
+                        this.conversationCount++;
+                        this.refreshStats();
+                    } else {
+                        throw new Error(data.error);
+                    }
+                    
+                } catch (error) {
+                    console.error('Voice processing error:', error);
+                    this.showMessage(`Processing failed: ${error.message}`, 'error');
+                    this.updateStatus('Error - ready to try again');
+                }
+                
+                // Reset transcription
+                setTimeout(() => {
+                    document.getElementById('transcription').textContent = 'Click microphone to speak again...';
+                }, 2000);
+            }
+
+            addConversation(input, response, analysis, processingTime) {
+                const historyEl = document.getElementById('conversationHistory');
+                const conversationItem = document.createElement('div');
+                conversationItem.className = 'conversation-item';
+                
+                const timestamp = new Date().toLocaleTimeString();
+                const intent = analysis?.intent || 'unknown';
+                const confidence = analysis?.confidence || 0;
+                
+                conversationItem.innerHTML = `
+                    <div class="conversation-input">
+                        <div class="label">🎙️ You said</div>
+                        <div class="text">"${input}"</div>
+                    </div>
+                    <div class="conversation-response">
+                        <div class="label">🤖 Voice Agent</div>
+                        <div class="text">${response}</div>
+                        <div class="meta">
+                            ${timestamp} • Intent: ${intent} • Confidence: ${Math.round(confidence * 100)}% • ${processingTime}ms
+                        </div>
+                    </div>
+                `;
+                
+                historyEl.appendChild(conversationItem);
+                historyEl.scrollTop = historyEl.scrollHeight;
+            }
+
+            async refreshStats() {
+                try {
+                    const response = await fetch('/api/voice/stats');
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        const stats = data.stats;
+                        document.getElementById('conversationCount').textContent = stats.totalConversations;
+                        document.getElementById('avgResponseTime').textContent = 
+                            stats.averageProcessingTime > 0 ? `${stats.averageProcessingTime}ms` : '-';
+                        document.getElementById('sessionId').textContent = 
+                            stats.sessionId ? stats.sessionId.substring(0, 8) + '...' : '-';
+                    }
+                } catch (error) {
+                    console.error('Failed to refresh stats:', error);
+                }
+            }
+
+            async clearHistory() {
+                try {
+                    const response = await fetch('/api/voice/clear', { method: 'POST' });
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        document.getElementById('conversationHistory').innerHTML = `
+                            <div class="conversation-item">
+                                <div class="conversation-response">
+                                    <div class="label">Voice Agent</div>
+                                    <div class="text">History cleared! Ready for new voice commands.</div>
+                                </div>
+                            </div>
+                        `;
+                        this.conversationCount = 0;
+                        this.refreshStats();
+                        this.showMessage('Conversation history cleared', 'success');
+                    }
+                } catch (error) {
+                    this.showMessage('Failed to clear history', 'error');
+                }
+            }
+
+            showMessage(message, type = 'info') {
+                const responseArea = document.querySelector('.response-area');
+                const messageEl = document.createElement('div');
+                messageEl.className = type === 'error' ? 'error-message' : 'success-message';
+                messageEl.textContent = message;
+                
+                responseArea.insertBefore(messageEl, responseArea.firstChild);
+                
+                setTimeout(() => {
+                    messageEl.remove();
+                }, 5000);
+            }
+        }
+
+        // Global functions for UI interaction
+        function simulateVoiceInput(text) {
+            // Remove quotes if present
+            const cleanText = text.replace(/['"]/g, '');
+            
+            // Update transcription
+            document.getElementById('transcription').textContent = cleanText;
+            
+            // Process as voice input
+            if (window.voiceAgent) {
+                window.voiceAgent.processVoiceInput(cleanText);
+            }
+        }
+
+        async function refreshStats() {
+            if (window.voiceAgent) {
+                await window.voiceAgent.refreshStats();
+            }
+        }
+
+        async function clearHistory() {
+            if (window.voiceAgent) {
+                await window.voiceAgent.clearHistory();
+            }
+        }
+
+        async function testVoiceAgent() {
+            try {
+                const response = await fetch('/api/voice/test');
+                const data = await response.json();
+                
+                if (data.success) {
+                    console.log('Voice Agent Test Results:', data.testResults);
+                    
+                    const historyEl = document.getElementById('conversationHistory');
+                    const testItem = document.createElement('div');
+                    testItem.className = 'conversation-item';
+                    testItem.innerHTML = `
+                        <div class="conversation-response">
+                            <div class="label">🧪 Test Results</div>
+                            <div class="text">
+                                Ran ${data.testResults.length} test scenarios successfully!<br>
+                                Check browser console for detailed results.
+                            </div>
+                        </div>
+                    `;
+                    historyEl.appendChild(testItem);
+                    historyEl.scrollTop = historyEl.scrollHeight;
+                    
+                    if (window.voiceAgent) {
+                        window.voiceAgent.showMessage('Test completed successfully', 'success');
+                    }
+                }
+            } catch (error) {
+                console.error('Test failed:', error);
+                if (window.voiceAgent) {
+                    window.voiceAgent.showMessage('Test failed', 'error');
+                }
+            }
+        }
+
+        // Initialize the voice agent UI when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.voiceAgent = new VoiceAgentUI();
+            
+            // Show keyboard shortcut tip
+            setTimeout(() => {
+                document.getElementById('voiceStatus').textContent = 
+                    'Click microphone or press Ctrl+Space to start speaking';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
