@@ -1,5 +1,5 @@
-[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
-[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[dotenv@17.2.3] injecting env (3) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  enable debug logging with { debug: true }
 📦 Registered tool: weather_tool
 🌤️ Day 9 - WeatherTool MCP Web UI running on port 3009
 📱 Visit http://localhost:3009 to test custom WeatherTool
@@ -17,13 +17,92 @@
 🛠️ Available Tools:
   - weather_tool: Get current weather conditions, forecasts, and weather information for any location
 ✅ Auto-connected to WeatherMCP server with 1 tool(s)
+🌤️ Weather request: Paris (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 1ms
+🌤️ Weather request: Paris (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 0ms
+🌤️ Weather request: Paris (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 0ms
+🌤️ Weather request: Paris (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 1ms
+🌤️ Weather request: Paris (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 1ms
+🌤️ Weather request: Paris (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Paris', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 0ms
+🔗 Web client connecting to WeatherMCP server...
+📦 Registered tool: weather_tool
+🚀 WeatherMCP Server starting...
+📋 Server Info:
+  Name: weather-mcp-server
+  Version: 1.0.0
+  Capabilities: tools
+  Tools: 1
+🔍 Tools list requested - returning 1 tools
+
+🛠️ Available Tools:
+  - weather_tool: Get current weather conditions, forecasts, and weather information for any location
 🌤️ Weather request: London (current, celsius)
 📨 Processing request: tools/call
 🛠️ Tool call: weather_tool with arguments: { location: 'London', type: 'current', units: 'celsius', days: 5 }
 🌤️ WeatherTool executing with parameters: { location: 'London', type: 'current', units: 'celsius', days: 5 }
 ✅ Tool 'weather_tool' executed successfully in 0ms
-🌤️ Weather request: Tokyo (detailed, fahrenheit)
+🌤️ Weather request: London (current, celsius)
 📨 Processing request: tools/call
-🛠️ Tool call: weather_tool with arguments: { location: 'Tokyo', type: 'detailed', units: 'fahrenheit', days: 5 }
-🌤️ WeatherTool executing with parameters: { location: 'Tokyo', type: 'detailed', units: 'fahrenheit', days: 5 }
+🛠️ Tool call: weather_tool with arguments: { location: 'London', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'London', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 1ms
+🌤️ Weather request: London (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'London', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'London', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 0ms
+🔗 Web client connecting to WeatherMCP server...
+📦 Registered tool: weather_tool
+🚀 WeatherMCP Server starting...
+📋 Server Info:
+  Name: weather-mcp-server
+  Version: 1.0.0
+  Capabilities: tools
+  Tools: 1
+🔍 Tools list requested - returning 1 tools
+
+🛠️ Available Tools:
+  - weather_tool: Get current weather conditions, forecasts, and weather information for any location
+🌤️ Weather request: London (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'London', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'London', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 1ms
+🌤️ Weather request: Tokyo (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Tokyo', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Tokyo', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 0ms
+🌤️ Weather request: Tokyo (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Tokyo', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Tokyo', type: 'current', units: 'celsius', days: 5 }
+✅ Tool 'weather_tool' executed successfully in 0ms
+🌤️ Weather request: Tokyo (current, celsius)
+📨 Processing request: tools/call
+🛠️ Tool call: weather_tool with arguments: { location: 'Tokyo', type: 'current', units: 'celsius', days: 5 }
+🌤️ WeatherTool executing with parameters: { location: 'Tokyo', type: 'current', units: 'celsius', days: 5 }
 ✅ Tool 'weather_tool' executed successfully in 0ms

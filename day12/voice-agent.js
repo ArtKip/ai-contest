@@ -229,20 +229,9 @@ class VoiceAgent {
 
     handleCalculation(input, analysis) {
         try {
-            // Simple math evaluation (in production, use a proper math parser)
-            const mathExpression = input
-                .toLowerCase()
-                .replace(/calculate|compute|what is|equals/gi, '')
-                .replace(/plus/g, '+')
-                .replace(/minus/g, '-')
-                .replace(/times|multiplied by/g, '*')
-                .replace(/divided by/g, '/')
-                .replace(/x/g, '*')
-                .replace(/÷/g, '/')
-                .replace(/[^\d+\-*/.() ]/g, '')
-                .trim();
-
-            // Handle special cases
+            console.log(`🧮 Processing calculation: "${input}"`);
+            
+            // Handle special cases first
             if (input.includes('square root')) {
                 const number = parseFloat(input.match(/\d+(?:\.\d+)?/)?.[0] || '0');
                 const result = Math.sqrt(number);
@@ -259,16 +248,49 @@ class VoiceAgent {
                 }
             }
 
-            // Basic evaluation for simple expressions
-            if (mathExpression && /^[\d+\-*/.() ]+$/.test(mathExpression)) {
-                const result = Function(`"use strict"; return (${mathExpression})`)();
-                return `The answer is ${result}.`;
+            // Extract numbers and operators safely
+            const numbers = input.match(/\d+(?:\.\d+)?/g);
+            if (!numbers || numbers.length < 2) {
+                return "I need at least two numbers to calculate. Try 'calculate 5 plus 6' or '10 times 3'.";
             }
 
-            return "I can help with calculations! Try asking me to 'calculate 25 times 4' or 'what is the square root of 16'.";
+            // Simple two-number operations
+            const num1 = parseFloat(numbers[0]);
+            const num2 = parseFloat(numbers[1]);
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                return "I couldn't understand the numbers. Please try again with clear numbers.";
+            }
+
+            let result;
+            let operation;
+
+            // Detect operation type
+            if (input.includes('+') || input.includes('plus') || input.includes('add')) {
+                result = num1 + num2;
+                operation = `${num1} + ${num2}`;
+            } else if (input.includes('-') || input.includes('minus') || input.includes('subtract')) {
+                result = num1 - num2;
+                operation = `${num1} - ${num2}`;
+            } else if (input.includes('*') || input.includes('x') || input.includes('times') || input.includes('multiply')) {
+                result = num1 * num2;
+                operation = `${num1} × ${num2}`;
+            } else if (input.includes('/') || input.includes('÷') || input.includes('divided') || input.includes('divide')) {
+                if (num2 === 0) {
+                    return "I can't divide by zero! Please try a different calculation.";
+                }
+                result = num1 / num2;
+                operation = `${num1} ÷ ${num2}`;
+            } else {
+                return "I couldn't determine the operation. Try saying 'add', 'multiply', 'divide', or use symbols like + - * /.";
+            }
+
+            console.log(`🧮 Calculated: ${operation} = ${result}`);
+            return `${operation} equals ${result}.`;
             
         } catch (error) {
-            return "I couldn't perform that calculation. Please try rephrasing your math question.";
+            console.error(`❌ Calculation error: ${error.message}`);
+            return "I encountered an error with that calculation. Please try a simpler format like 'calculate 5 plus 6'.";
         }
     }
 

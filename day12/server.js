@@ -64,12 +64,18 @@ class VoiceAgentServer {
 
                 console.log(`🎙️ Processing voice input: "${spokenText}"`);
                 
-                const result = await this.voiceAgent.processVoiceInput(spokenText, {
+                // Add timeout to prevent hanging
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('Voice processing timeout')), 10000);
+                });
+                
+                const processingPromise = this.voiceAgent.processVoiceInput(spokenText, {
                     ...metadata,
                     userAgent: req.headers['user-agent'],
                     clientIP: req.ip
                 });
-
+                
+                const result = await Promise.race([processingPromise, timeoutPromise]);
                 res.json(result);
 
             } catch (error) {

@@ -643,6 +643,10 @@
                 this.updateStatus('Processing your request...');
                 
                 try {
+                    // Add client-side timeout
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 15000);
+                    
                     const response = await fetch('/api/voice/process', {
                         method: 'POST',
                         headers: {
@@ -654,7 +658,14 @@
                                 timestamp: new Date().toISOString()
                             }
                         }),
+                        signal: controller.signal
                     });
+
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                    }
 
                     const data = await response.json();
                     
@@ -664,13 +675,19 @@
                         this.conversationCount++;
                         this.refreshStats();
                     } else {
-                        throw new Error(data.error);
+                        throw new Error(data.error || 'Unknown processing error');
                     }
                     
                 } catch (error) {
                     console.error('Voice processing error:', error);
-                    this.showMessage(`Processing failed: ${error.message}`, 'error');
-                    this.updateStatus('Error - ready to try again');
+                    
+                    if (error.name === 'AbortError') {
+                        this.showMessage('Processing timed out. Please try again with a simpler command.', 'error');
+                        this.updateStatus('Timeout - ready to try again');
+                    } else {
+                        this.showMessage(`Processing failed: ${error.message}`, 'error');
+                        this.updateStatus('Error - ready to try again');
+                    }
                 }
                 
                 // Reset transcription

@@ -335,7 +335,9 @@ class WeatherTool {
      */
     generateRandomWeather(location) {
         const condition = this.weatherConditions[Math.floor(Math.random() * this.weatherConditions.length)];
-        const baseTemp = Math.floor(Math.random() * 35) + 5; // 5-40°C
+        // Use location as seed for consistent temperatures per city
+        const locationSeed = location.toLowerCase().split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+        const baseTemp = Math.floor((locationSeed % 25)) + 10; // 10-35°C, consistent per location
         
         const forecast = [];
         for (let i = 0; i < 5; i++) {
