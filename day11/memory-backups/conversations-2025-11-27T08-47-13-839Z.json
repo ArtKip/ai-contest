@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "session_id": "88b94d4b-4d3b-4725-bb3b-e3c5b5740263",
+    "timestamp": "2025-11-27 08:47:10",
+    "user_input": "Hi, I'm Sarah. I'm a software engineer working on web applications.",
+    "agent_response": "I'm here to have a meaningful conversation with you. Feel free to share more details or ask any questions you might have. That reminds me of an interesting connection: ",
+    "metadata": "{\"tokensUsed\":59,\"responseTime\":1,\"analysis\":{\"intent\":\"general\",\"topics\":[],\"sentiment\":\"neutral\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":false,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":0}",
+    "tokens_used": 59,
+    "response_time_ms": 1
+  },
+  {
+    "id": 2,
+    "session_id": "88b94d4b-4d3b-4725-bb3b-e3c5b5740263",
+    "timestamp": "2025-11-27 08:47:11",
+    "user_input": "I love working with React and Node.js, and I prefer TypeScript over JavaScript.",
+    "agent_response": "Continuing our conversation, I'm glad to hear that! Regarding javascript, that's an interesting area. I'm here to have a meaningful conversation with you. Feel free to share more details or ask any questions you might have. That reminds me of an interesting connection: ",
+    "metadata": "{\"tokensUsed\":88,\"responseTime\":2,\"analysis\":{\"intent\":\"general\",\"topics\":[\"javascript\"],\"sentiment\":\"positive\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":false,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":1}",
+    "tokens_used": 88,
+    "response_time_ms": 2
+  },
+  {
+    "id": 3,
+    "session_id": "88b94d4b-4d3b-4725-bb3b-e3c5b5740263",
+    "timestamp": "2025-11-27 08:47:12",
+    "user_input": "I'm currently learning about microservices architecture.",
+    "agent_response": "Continuing our conversation, I'm here to have a meaningful conversation with you. Feel free to share more details or ask any questions you might have.",
+    "metadata": "{\"tokensUsed\":52,\"responseTime\":1,\"analysis\":{\"intent\":\"general\",\"topics\":[],\"sentiment\":\"neutral\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":false,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":3}",
+    "tokens_used": 52,
+    "response_time_ms": 1
+  }
+]

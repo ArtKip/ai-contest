@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Agent - Day 11</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 350px 1fr 300px;
+            grid-template-rows: auto 1fr;
+            gap: 20px;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 2.2em;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .main-chat {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .memory-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .session-setup {
+            margin-bottom: 25px;
+        }
+
+        .session-setup h3 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .session-setup h3::before {
+            content: "🤖";
+            margin-right: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: transform 0.2s;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .session-info {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .session-info h4 {
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .session-info p {
+            color: #718096;
+            font-size: 13px;
+            margin: 2px 0;
+        }
+
+        .chat-area {
+            flex: 1;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            max-height: 500px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.agent {
+            text-align: left;
+        }
+
+        .message-content {
+            display: inline-block;
+            max-width: 80%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.agent .message-content {
+            background: white;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-meta {
+            font-size: 11px;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 15px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .chat-input button {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .chat-input button:hover {
+            transform: translateY(-1px);
+        }
+
+        .chat-input button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .memory-stats {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .memory-stats h4 {
+            color: #4a5568;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .memory-stats h4::before {
+            content: "📊";
+            margin-right: 8px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 13px;
+        }
+
+        .stat-label {
+            color: #718096;
+        }
+
+        .stat-value {
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .memory-search {
+            margin-bottom: 20px;
+        }
+
+        .memory-search h4 {
+            color: #4a5568;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .memory-search h4::before {
+            content: "🔍";
+            margin-right: 8px;
+        }
+
+        .search-results {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .search-result {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 3px solid #667eea;
+            font-size: 12px;
+        }
+
+        .search-result-date {
+            color: #a0aec0;
+            font-size: 10px;
+        }
+
+        .typing-indicator {
+            display: none;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .typing-indicator .message-content {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 15px 20px;
+            border-radius: 20px;
+            border-bottom-left-radius: 5px;
+        }
+
+        .typing-dots {
+            display: inline-block;
+        }
+
+        .typing-dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5e0;
+            margin: 0 1px;
+            animation: typing 1.4s infinite both;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        .error-message {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+
+        .success-message {
+            background: #c6f6d5;
+            color: #2f855a;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr auto;
+            }
+            
+            .memory-panel {
+                grid-row: 4;
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Memory Agent Demo</h1>
+            <p>Day 11 - External Memory for Conversations</p>
+        </div>
+
+        <div class="sidebar">
+            <div class="session-setup">
+                <h3>Agent Setup</h3>
+                <div class="input-group">
+                    <label for="agentName">Agent Name:</label>
+                    <input type="text" id="agentName" value="MemoryBot" placeholder="Enter agent name">
+                </div>
+                <div class="input-group">
+                    <label for="personality">Personality:</label>
+                    <select id="personality">
+                        <option value="helpful">Helpful & Supportive</option>
+                        <option value="curious">Curious & Inquisitive</option>
+                        <option value="creative">Creative & Imaginative</option>
+                        <option value="formal">Formal & Professional</option>
+                        <option value="balanced" selected>Balanced</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="createNewSession()">🚀 Start New Session</button>
+                <button class="btn" onclick="endCurrentSession()" id="endSessionBtn" disabled>⏹️ End Session</button>
+            </div>
+
+            <div class="session-info" id="sessionInfo" style="display: none;">
+                <h4>Current Session</h4>
+                <p id="sessionId">Session ID: -</p>
+                <p id="agentNameDisplay">Agent: -</p>
+                <p id="conversationCount">Conversations: 0</p>
+            </div>
+
+            <div class="memory-stats" id="memoryStats" style="display: none;">
+                <h4>Memory Statistics</h4>
+                <div class="stat-item">
+                    <span class="stat-label">Total Conversations:</span>
+                    <span class="stat-value" id="totalConversations">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Sessions:</span>
+                    <span class="stat-value" id="totalSessions">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Stored Memories:</span>
+                    <span class="stat-value" id="totalMemories">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">This Session:</span>
+                    <span class="stat-value" id="sessionConversations">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-chat">
+            <div class="chat-area">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message agent">
+                        <div class="message-content">
+                            Hello! I'm a memory-enabled agent. I can remember our conversations and build upon our previous interactions. Start by creating a new session above, then let's chat!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="message-content">
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        placeholder="Type your message... (I'll remember it!)" 
+                        onkeypress="if(event.key==='Enter') sendMessage()"
+                        disabled
+                    >
+                    <button onclick="sendMessage()" id="sendBtn" disabled>Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="memory-panel">
+            <div class="memory-search">
+                <h4>Memory Search</h4>
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Search conversations..."
+                        onkeypress="if(event.key==='Enter') searchMemory()"
+                        disabled
+                    >
+                </div>
+                <button class="btn" onclick="searchMemory()" id="searchBtn" disabled>🔍 Search</button>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <div class="memory-stats">
+                <h4>Quick Actions</h4>
+                <button class="btn" onclick="refreshStats()" id="refreshBtn" disabled>📊 Refresh Stats</button>
+                <button class="btn" onclick="exportMemory()" id="exportBtn" disabled>💾 Export Memory</button>
+                <button class="btn" onclick="clearMessages()">🗑️ Clear Chat</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSession = null;
+        let messageCount = 0;
+
+        // Example conversation starters
+        const conversationStarters = [
+            "My name is Alex and I love programming",
+            "Can you remember what I told you about my hobbies?",
+            "I prefer technical explanations over simple ones",
+            "What did we discuss in our previous conversation?",
+            "I'm working on a machine learning project",
+            "Tell me about our conversation history"
+        ];
+
+        async function createNewSession() {
+            const agentName = document.getElementById('agentName').value || 'MemoryBot';
+            const personalityType = document.getElementById('personality').value;
+            
+            const personality = getPersonalityConfig(personalityType);
+            
+            try {
+                showMessage('Creating new memory agent session...', 'agent');
+                
+                const response = await fetch('/api/sessions/new', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        agentName,
+                        personality
+                    }),
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentSession = data.sessionId;
+                    updateUI(true);
+                    updateSessionInfo(data.sessionId, data.agentName);
+                    showMessage(`✅ New session created! I'm ${data.agentName} and I'm ready to chat with memory persistence.`, 'agent');
+                    
+                    // Add conversation starters
+                    setTimeout(() => {
+                        showMessage("💡 Try these conversation starters:", 'agent');
+                        conversationStarters.forEach((starter, index) => {
+                            setTimeout(() => {
+                                addConversationStarter(starter);
+                            }, (index + 1) * 200);
+                        });
+                    }, 1000);
+                    
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Failed to create session: ' + error.message);
+            }
+        }
+
+        async function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message || !currentSession) return;
+
+            messageInput.value = '';
+            messageCount++;
+            
+            // Show user message
+            showMessage(message, 'user');
+            
+            // Show typing indicator
+            showTyping(true);
+            
+            try {
+                const response = await fetch(`/api/sessions/${currentSession}/message`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message,
+                        metadata: {
+                            timestamp: new Date().toISOString(),
+                            messageNumber: messageCount
+                        }
+                    }),
+                });
+
+                const data = await response.json();
+                
+                showTyping(false);
+                
+                if (data.success) {
+                    showMessage(data.response, 'agent', {
+                        responseTime: data.metadata.responseTime,
+                        contextUsed: data.metadata.contextUsed
+                    });
+                    
+                    // Update conversation count
+                    document.getElementById('conversationCount').textContent = `Conversations: ${data.conversationId}`;
+                    document.getElementById('sessionConversations').textContent = data.conversationId;
+                    
+                    // Refresh stats occasionally
+                    if (messageCount % 3 === 0) {
+                        setTimeout(refreshStats, 1000);
+                    }
+                    
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showTyping(false);
+                showError('Failed to send message: ' + error.message);
+            }
+        }
+
+        async function endCurrentSession() {
+            if (!currentSession) return;
+            
+            try {
+                const response = await fetch(`/api/sessions/${currentSession}/end`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('📝 Session ended. All conversations have been saved to memory!', 'agent');
+                    currentSession = null;
+                    messageCount = 0;
+                    updateUI(false);
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Failed to end session: ' + error.message);
+            }
+        }
+
+        async function searchMemory() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!searchTerm || !currentSession) return;
+
+            try {
+                const response = await fetch(`/api/sessions/${currentSession}/search?q=${encodeURIComponent(searchTerm)}&limit=5`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultsDiv.innerHTML = '';
+                    
+                    if (data.results.length === 0) {
+                        resultsDiv.innerHTML = '<p style="color: #718096; font-size: 12px;">No matching conversations found.</p>';
+                    } else {
+                        data.results.forEach(result => {
+                            const resultDiv = document.createElement('div');
+                            resultDiv.className = 'search-result';
+                            resultDiv.innerHTML = `
+                                <div><strong>User:</strong> ${result.user_input}</div>
+                                <div><strong>Agent:</strong> ${result.agent_response.substring(0, 100)}...</div>
+                                <div class="search-result-date">${new Date(result.timestamp).toLocaleString()}</div>
+                            `;
+                            resultsDiv.appendChild(resultDiv);
+                        });
+                    }
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Search failed: ' + error.message);
+            }
+        }
+
+        async function refreshStats() {
+            if (!currentSession) return;
+
+            try {
+                const response = await fetch(`/api/sessions/${currentSession}/stats`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const stats = data.stats;
+                    document.getElementById('totalConversations').textContent = stats.totalConversations;
+                    document.getElementById('totalSessions').textContent = stats.totalSessions;
+                    document.getElementById('totalMemories').textContent = stats.totalMemories;
+                    document.getElementById('sessionConversations').textContent = stats.conversationsThisSession;
+                }
+            } catch (error) {
+                console.error('Failed to refresh stats:', error);
+            }
+        }
+
+        function showMessage(message, sender, metadata = {}) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            let metaInfo = '';
+            if (metadata.responseTime) {
+                metaInfo += `Response time: ${metadata.responseTime}ms`;
+            }
+            if (metadata.contextUsed) {
+                metaInfo += ` • Context: ${metadata.contextUsed} items`;
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">${message}</div>
+                ${metaInfo ? `<div class="message-meta">${metaInfo}</div>` : ''}
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function addConversationStarter(text) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const starterDiv = document.createElement('div');
+            starterDiv.className = 'message agent';
+            starterDiv.style.cursor = 'pointer';
+            starterDiv.style.opacity = '0.7';
+            starterDiv.onclick = () => {
+                document.getElementById('messageInput').value = text;
+            };
+            
+            starterDiv.innerHTML = `
+                <div class="message-content" style="background: #f0f4ff; border: 1px dashed #667eea;">
+                    💡 "${text}"
+                    <div style="font-size: 11px; margin-top: 5px; color: #667eea;">Click to use this message</div>
+                </div>
+            `;
+            
+            messagesDiv.appendChild(starterDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showTyping(show) {
+            const typingDiv = document.getElementById('typingIndicator');
+            typingDiv.style.display = show ? 'block' : 'none';
+            
+            if (show) {
+                const messagesDiv = document.getElementById('chatMessages');
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        }
+
+        function showError(message) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            messagesDiv.appendChild(errorDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function updateUI(sessionActive) {
+            const elements = {
+                messageInput: document.getElementById('messageInput'),
+                sendBtn: document.getElementById('sendBtn'),
+                endSessionBtn: document.getElementById('endSessionBtn'),
+                searchInput: document.getElementById('searchInput'),
+                searchBtn: document.getElementById('searchBtn'),
+                refreshBtn: document.getElementById('refreshBtn'),
+                exportBtn: document.getElementById('exportBtn')
+            };
+
+            Object.values(elements).forEach(el => {
+                el.disabled = !sessionActive;
+            });
+
+            document.getElementById('sessionInfo').style.display = sessionActive ? 'block' : 'none';
+            document.getElementById('memoryStats').style.display = sessionActive ? 'block' : 'none';
+        }
+
+        function updateSessionInfo(sessionId, agentName) {
+            document.getElementById('sessionId').textContent = `Session: ${sessionId.substring(0, 8)}...`;
+            document.getElementById('agentNameDisplay').textContent = `Agent: ${agentName}`;
+            document.getElementById('conversationCount').textContent = 'Conversations: 0';
+        }
+
+        function clearMessages() {
+            const messagesDiv = document.getElementById('chatMessages');
+            messagesDiv.innerHTML = `
+                <div class="message agent">
+                    <div class="message-content">
+                        Chat cleared! Previous messages are still saved in memory. Start a conversation or search to see them.
+                    </div>
+                </div>
+            `;
+        }
+
+        function exportMemory() {
+            if (!currentSession) return;
+            showMessage('💾 Memory export feature would download conversation history and memories as JSON files in a real implementation.', 'agent');
+        }
+
+        function getPersonalityConfig(type) {
+            const configs = {
+                helpful: { helpful: 0.95, curious: 0.6, formal: 0.4, creative: 0.5 },
+                curious: { helpful: 0.7, curious: 0.95, formal: 0.3, creative: 0.8 },
+                creative: { helpful: 0.6, curious: 0.8, formal: 0.2, creative: 0.95 },
+                formal: { helpful: 0.8, curious: 0.4, formal: 0.9, creative: 0.3 },
+                balanced: { helpful: 0.7, curious: 0.7, formal: 0.5, creative: 0.7 }
+            };
+            return configs[type] || configs.balanced;
+        }
+
+        // Initialize with stats refresh every 30 seconds
+        setInterval(() => {
+            if (currentSession) {
+                refreshStats();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

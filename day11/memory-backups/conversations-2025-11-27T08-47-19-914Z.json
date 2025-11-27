@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "session_id": "88b94d4b-4d3b-4725-bb3b-e3c5b5740263",
+    "timestamp": "2025-11-27 08:47:10",
+    "user_input": "Hi, I'm Sarah. I'm a software engineer working on web applications.",
+    "agent_response": "I'm here to have a meaningful conversation with you. Feel free to share more details or ask any questions you might have. That reminds me of an interesting connection: ",
+    "metadata": "{\"tokensUsed\":59,\"responseTime\":1,\"analysis\":{\"intent\":\"general\",\"topics\":[],\"sentiment\":\"neutral\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":false,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":0}",
+    "tokens_used": 59,
+    "response_time_ms": 1
+  },
+  {
+    "id": 2,
+    "session_id": "88b94d4b-4d3b-4725-bb3b-e3c5b5740263",
+    "timestamp": "2025-11-27 08:47:11",
+    "user_input": "I love working with React and Node.js, and I prefer TypeScript over JavaScript.",
+    "agent_response": "Continuing our conversation, I'm glad to hear that! Regarding javascript, that's an interesting area. I'm here to have a meaningful conversation with you. Feel free to share more details or ask any questions you might have. That reminds me of an interesting connection: ",
+    "metadata": "{\"tokensUsed\":88,\"responseTime\":2,\"analysis\":{\"intent\":\"general\",\"topics\":[\"javascript\"],\"sentiment\":\"positive\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":false,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":1}",
+    "tokens_used": 88,
+    "response_time_ms": 2
+  },
+  {
+    "id": 3,
+    "session_id": "88b94d4b-4d3b-4725-bb3b-e3c5b5740263",
+    "timestamp": "2025-11-27 08:47:12",
+    "user_input": "I'm currently learning about microservices architecture.",
+    "agent_response": "Continuing our conversation, I'm here to have a meaningful conversation with you. Feel free to share more details or ask any questions you might have.",
+    "metadata": "{\"tokensUsed\":52,\"responseTime\":1,\"analysis\":{\"intent\":\"general\",\"topics\":[],\"sentiment\":\"neutral\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":false,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":3}",
+    "tokens_used": 52,
+    "response_time_ms": 1
+  },
+  {
+    "id": 4,
+    "session_id": "25a6ede1-ce98-4a00-9cd0-72281ddd18b3",
+    "timestamp": "2025-11-27 08:47:14",
+    "user_input": "Hi there! Do you remember me?",
+    "agent_response": "Based on what I remember about you: Discussed javascript in session. ",
+    "metadata": "{\"tokensUsed\":25,\"responseTime\":1,\"analysis\":{\"intent\":\"memory_query\",\"topics\":[],\"sentiment\":\"neutral\",\"complexity\":\"low\",\"requiresMemory\":true,\"isQuestion\":true,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":1}",
+    "tokens_used": 25,
+    "response_time_ms": 1
+  },
+  {
+    "id": 5,
+    "session_id": "25a6ede1-ce98-4a00-9cd0-72281ddd18b3",
+    "timestamp": "2025-11-27 08:47:15",
+    "user_input": "I finished my microservices project! Can you ask me about it?",
+    "agent_response": "Continuing our conversation, I'm here to have a meaningful conversation with you. Feel free to share more details or ask any questions you might have.",
+    "metadata": "{\"tokensUsed\":53,\"responseTime\":2,\"analysis\":{\"intent\":\"general\",\"topics\":[],\"sentiment\":\"neutral\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":true,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":2}",
+    "tokens_used": 53,
+    "response_time_ms": 2
+  },
+  {
+    "id": 6,
+    "session_id": "25a6ede1-ce98-4a00-9cd0-72281ddd18b3",
+    "timestamp": "2025-11-27 08:47:16",
+    "user_input": "Now I want to learn about Docker containers. Can you help?",
+    "agent_response": "I'm here to help! Based on what you've asked, I can assist you with several approaches. Let me know if you'd like me to provide step-by-step guidance, examples, or if you have specific requirements I should consider.",
+    "metadata": "{\"tokensUsed\":69,\"responseTime\":15,\"analysis\":{\"intent\":\"assistance_request\",\"topics\":[\"ai\"],\"sentiment\":\"neutral\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":true,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":3}",
+    "tokens_used": 69,
+    "response_time_ms": 15
+  },
+  {
+    "id": 7,
+    "session_id": "66482a95-b1a1-4192-b0a9-b0510e834e1c",
+    "timestamp": "2025-11-27 08:47:17",
+    "user_input": "What do you remember about my technical preferences?",
+    "agent_response": "Based on what I remember about you: Discussed ai in session. Discussed javascript in session. ",
+    "metadata": "{\"tokensUsed\":37,\"responseTime\":1,\"analysis\":{\"intent\":\"memory_query\",\"topics\":[],\"sentiment\":\"neutral\",\"complexity\":\"medium\",\"requiresMemory\":true,\"isQuestion\":true,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":2}",
+    "tokens_used": 37,
+    "response_time_ms": 1
+  },
+  {
+    "id": 8,
+    "session_id": "66482a95-b1a1-4192-b0a9-b0510e834e1c",
+    "timestamp": "2025-11-27 08:47:18",
+    "user_input": "I've been promoted to tech lead! What should I focus on?",
+    "agent_response": "I'd be happy to help you with that information. Could you be more specific about what information you're looking for? This will help me provide you with the most relevant and useful response. That reminds me of an interesting connection: ",
+    "metadata": "{\"tokensUsed\":74,\"responseTime\":1,\"analysis\":{\"intent\":\"information_request\",\"topics\":[],\"sentiment\":\"neutral\",\"complexity\":\"medium\",\"requiresMemory\":false,\"isQuestion\":true,\"isInstruction\":false,\"personalInfo\":false},\"contextUsed\":3}",
+    "tokens_used": 74,
+    "response_time_ms": 1
+  }
+]

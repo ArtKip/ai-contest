@@ -1,0 +1,27 @@
+{
+  "name": "day11-memory-agent",
+  "version": "1.0.0",
+  "description": "Memory-enabled conversational agent with SQLite and JSON persistence",
+  "main": "memory-agent.js",
+  "scripts": {
+    "start": "node demo.js",
+    "test": "node test-memory-persistence.js",
+    "web": "node web-server.js",
+    "cli": "node memory-agent.js"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "memory",
+    "conversation",
+    "sqlite",
+    "persistence"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7"
+  }
+}
