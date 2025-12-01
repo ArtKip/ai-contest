@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
+require('dotenv').config({ path: '../day1/.env' });
 const fs = require('fs').promises;
 const path = require('path');
+const axios = require('axios');
 
 // Import Day 13's document indexer for retrieval
 const { DocumentIndexer } = require('../day13/document-indexer');
@@ -26,27 +28,31 @@ class RAGAgent {
         this.maxChunks = options.maxChunks || 3;
         this.minSimilarity = options.minSimilarity || 0.1;
         this.maxContextLength = options.maxContextLength || 2000;
+        this.verbose = options.verbose !== false;
         
-        // Mock LLM for demonstration (replace with real LLM in production)
-        this.useMockLLM = options.useMockLLM !== false;
+        // Use real Anthropic API or mock LLM
+        this.useMockLLM = options.useMockLLM !== false && !process.env.ANTHROPIC_API_KEY;
+        this.anthropicKey = process.env.ANTHROPIC_API_KEY;
         
-        console.log('🤖 RAG Agent initialized');
-        console.log(`   Max chunks: ${this.maxChunks}`);
-        console.log(`   Min similarity: ${this.minSimilarity}`);
-        console.log(`   Using mock LLM: ${this.useMockLLM}`);
+        if (this.verbose) {
+            console.log('🤖 RAG Agent initialized');
+            console.log(`   Max chunks: ${this.maxChunks}`);
+            console.log(`   Min similarity: ${this.minSimilarity}`);
+            console.log(`   Using mock LLM: ${this.useMockLLM}`);
+        }
     }
 
     /**
      * Main RAG pipeline: Question → Retrieve → Generate
      */
     async answerWithRAG(question, options = {}) {
-        console.log(`\n🔍 RAG Pipeline for: "${question}"`);
+        if (this.verbose) console.log(`\n🔍 RAG Pipeline for: "${question}"`);
         
         const startTime = Date.now();
         
         try {
             // Step 1: Search for relevant chunks
-            console.log('📚 Step 1: Searching for relevant document chunks...');
+            if (this.verbose) console.log('📚 Step 1: Searching for relevant document chunks...');
             const relevantChunks = await this.retrieveRelevantChunks(question, {
                 topK: options.maxChunks || this.maxChunks,
                 minSimilarity: options.minSimilarity || this.minSimilarity
@@ -226,14 +232,15 @@ class RAGAgent {
             return this.mockLLMWithContext(question, context);
         }
         
-        // TODO: Replace with actual LLM API call
-        // const response = await this.callLLMAPI({
-        //     prompt: context,
-        //     maxTokens: 200
-        // });
-        // return response.text;
-        
-        return this.mockLLMWithContext(question, context);
+        const prompt = `Based on this context information:
+
+${context}
+
+Please answer the following question: ${question}
+
+Provide a clear, informative answer based on the provided context.`;
+
+        return await this.callAnthropicAPI(prompt);
     }
 
     /**
@@ -244,14 +251,47 @@ class RAGAgent {
             return this.mockLLMDirect(question);
         }
         
-        // TODO: Replace with actual LLM API call
-        // const response = await this.callLLMAPI({
-        //     prompt: question,
-        //     maxTokens: 200
-        // });
-        // return response.text;
-        
-        return this.mockLLMDirect(question);
+        return await this.callAnthropicAPI(question);
+    }
+
+    /**
+     * Call Anthropic Claude API
+     */
+    async callAnthropicAPI(prompt) {
+        if (!this.anthropicKey) {
+            throw new Error('ANTHROPIC_API_KEY not found in environment variables');
+        }
+
+        try {
+            const response = await axios.post(
+                'https://api.anthropic.com/v1/messages',
+                {
+                    model: 'claude-3-haiku-20240307',
+                    max_tokens: 300,
+                    messages: [
+                        {
+                            role: 'user',
+                            content: prompt
+                        }
+                    ]
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': this.anthropicKey,
+                        'anthropic-version': '2023-06-01'
+                    }
+                }
+            );
+
+            return response.data.content[0].text;
+        } catch (error) {
+            console.error('Anthropic API error:', error.message);
+            // Fallback to mock if API fails
+            return this.useMockLLM ? 
+                this.mockLLMWithContext(prompt, '') : 
+                'Error: Could not generate answer';
+        }
     }
 
     /**
@@ -430,6 +470,15 @@ class RAGAgent {
         const confidentCount = confidentPhrases.filter(phrase => text.toLowerCase().includes(phrase)).length;
         
         return Math.max(0, confidentCount - uncertainCount);
+    }
+
+    /**
+     * Close the RAG agent and cleanup resources
+     */
+    async close() {
+        if (this.indexer && this.indexer.close) {
+            await this.indexer.close();
+        }
     }
 
     /**

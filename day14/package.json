@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node rag-agent.js --help",
     "compare": "node rag-agent.js",
-    "demo": "node create-knowledge-base.js && node rag-agent.js --question \"What is machine learning?\"",
+    "demo": "node create-knowledge-base.js && node simple-demo.js",
+    "demo-old": "node create-knowledge-base.js && node rag-agent.js --question \"What is machine learning?\"",
     "test": "node test-rag.js",
     "evaluation": "node evaluation.js"
   },
@@ -17,6 +18,8 @@
     "openai": "^4.20.1",
     "sqlite3": "^5.1.7",
     "uuid": "^13.0.0",
-    "crypto-js": "^4.2.0"
+    "crypto-js": "^4.2.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
   }
 }

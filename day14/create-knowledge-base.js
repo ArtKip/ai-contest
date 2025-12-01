@@ -12,7 +12,11 @@ const { DocumentIndexer } = require('../day13/document-indexer');
  */
 
 async function createKnowledgeBase() {
-    console.log('📚 Creating knowledge base for RAG system...');
+    console.log('📚 Setting up knowledge base...');
+    
+    // Temporarily suppress console.log to reduce output noise
+    const originalLog = console.log;
+    console.log = () => {};
     
     const indexer = new DocumentIndexer({
         storage: { dbPath: './rag_knowledge_base.db' }
@@ -22,15 +26,16 @@ async function createKnowledgeBase() {
         // Create sample documents for testing RAG
         await createSampleDocuments();
         
-        // Index the sample documents
-        console.log('\n📖 Indexing sample documents...');
+        // Index the sample documents (with suppressed output)
         const result = await indexer.indexDirectory('./rag-docs', {
             recursive: true,
             maxFiles: 20
         });
         
-        console.log(`✅ Knowledge base created successfully!`);
-        console.log(`   Documents indexed: ${result.processedFiles}`);
+        // Restore console.log
+        console.log = originalLog;
+        
+        console.log(`✅ Knowledge base ready (${result.processedFiles} documents indexed)`);
         
         // Show stats
         const stats = await indexer.getIndexStats();
