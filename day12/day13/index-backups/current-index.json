@@ -1,0 +1,721 @@
+{
+  "exportTime": "2025-12-01T08:32:49.634Z",
+  "stats": {
+    "documents": 3,
+    "chunks": 4,
+    "embeddings": 4,
+    "vocabularySize": 73,
+    "totalSizeBytes": 1482,
+    "averageChunksPerDocument": 1,
+    "databasePath": "./document_index.db"
+  },
+  "documents": [
+    {
+      "id": "3a85f58592b2726d",
+      "filename": "README.md",
+      "filepath": "/Users/arturkipel/Documents/src/ai-contest/day12/day13/sample-docs/README.md",
+      "content_type": "markdown",
+      "file_size": 315,
+      "content_hash": "2e25362678dc6fd5fcb5b37d6dba8883",
+      "metadata": "{\"extension\":\".md\",\"lastModified\":\"2025-12-01T08:32:42.125Z\",\"contentPreview\":\"\\n# Sample Project\\n\\nThis is a sample project for testing document indexing.\\n\\n## Features\\n\\n- Document chunking and embedding\\n- Vector similarity search\\n- Multiple file format support\\n\\n## Installation\\n\\n`\"}",
+      "indexed_at": "2025-12-01 08:32:45",
+      "chunk_count": 1
+    },
+    {
+      "id": "d073da5e6b6f1ec3",
+      "filename": "article.txt",
+      "filepath": "/Users/arturkipel/Documents/src/ai-contest/day12/day13/sample-docs/article.txt",
+      "content_type": "text",
+      "file_size": 611,
+      "content_hash": "c809b205fd6687a7fea972844c0e5e14",
+      "metadata": "{\"extension\":\".txt\",\"lastModified\":\"2025-12-01T08:32:42.125Z\",\"contentPreview\":\"\\nMachine Learning and Natural Language Processing\\n\\nMachine learning has revolutionized how we process and understand text.\\nModern NLP systems can perform tasks like translation, summarization,\\nand sem\"}",
+      "indexed_at": "2025-12-01 08:32:45",
+      "chunk_count": 2
+    },
+    {
+      "id": "b848249b29d5b963",
+      "filename": "example.js",
+      "filepath": "/Users/arturkipel/Documents/src/ai-contest/day12/day13/sample-docs/example.js",
+      "content_type": "code",
+      "file_size": 556,
+      "content_hash": "d164d0237b8d821ac9eb76e4beda3ca9",
+      "metadata": "{\"extension\":\".js\",\"lastModified\":\"2025-12-01T08:32:42.125Z\",\"contentPreview\":\"\\n/**\\n * Example JavaScript code for indexing\\n */\\n\\nfunction calculateSimilarity(vector1, vector2) {\\n    let dotProduct = 0;\\n    let magnitude1 = 0;\\n    let magnitude2 = 0;\\n    \\n    for (let i = 0; i < \"}",
+      "indexed_at": "2025-12-01 08:32:45",
+      "chunk_count": 1
+    }
+  ],
+  "chunks": [
+    {
+      "id": "chunk_108ea6ff4b62",
+      "document_id": "3a85f58592b2726d",
+      "content": "Features\n\n\n- Document chunking and embedding\n- Vector similarity search\n- Multiple file format support",
+      "chunk_type": "section",
+      "chunk_index": 1,
+      "start_position": 0,
+      "end_position": 102,
+      "metadata": "{\"header\":\"Features\",\"level\":2,\"contentType\":\"markdown\",\"chunkIndex\":1,\"length\":105,\"wordCount\":16,\"createdAt\":\"2025-12-01T08:32:45.375Z\"}",
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": "chunk_ccebdf4edddf",
+      "document_id": "d073da5e6b6f1ec3",
+      "content": "Machine Learning and Natural Language Processing\n\nMachine learning has revolutionized how we process and understand text.\nModern NLP systems can perform tasks like translation, summarization,\nand semantic search with remarkable accuracy.\n\nVector embeddings are a key component of these systems, allowing us to\nrepresent text as numerical vectors that capture semantic meaning.\nThis enables similarity search and clustering of documents.",
+      "chunk_type": "text_block",
+      "chunk_index": 0,
+      "start_position": 0,
+      "end_position": 436,
+      "metadata": "{\"paragraphCount\":3,\"contentType\":\"text\",\"chunkIndex\":0,\"length\":436,\"wordCount\":60,\"createdAt\":\"2025-12-01T08:32:45.376Z\"}",
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": "chunk_6486d6f2cd26",
+      "document_id": "d073da5e6b6f1ec3",
+      "content": "how we process and understand text. Modern NLP systems can perform tasks like translation, summarization, and semantic search with remarkable accuracy. Vector embeddings are a key component of these systems, allowing us to represent text as numerical vectors that capture semantic meaning. This enables similarity search and clustering of documents. Document indexing systems use these techniques to make large collections\nof text searchable and retrievable based on semantic similarity rather\nthan just keyword matching.",
+      "chunk_type": "text_block",
+      "chunk_index": 1,
+      "start_position": 0,
+      "end_position": 521,
+      "metadata": "{\"paragraphCount\":1,\"hasOverlap\":true,\"overlapWords\":50,\"contentType\":\"text\",\"chunkIndex\":1,\"length\":521,\"wordCount\":74,\"createdAt\":\"2025-12-01T08:32:45.376Z\"}",
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": "chunk_56e9dc662574",
+      "document_id": "b848249b29d5b963",
+      "content": "/**\n * Example JavaScript code for indexing\n */\n\n\nfunction calculateSimilarity(vector1, vector2) {\n\n    let dotProduct = 0;\n    let magnitude1 = 0;\n    let magnitude2 = 0;\n    \n    for (let i = 0; i < vector1.length; i++) {\n        dotProduct += vector1[i] * vector2[i];\n        magnitude1 += vector1[i] * vector1[i];\n        magnitude2 += vector2[i] * vector2[i];\n    }\n    \n    magnitude1 = Math.sqrt(magnitude1);\n    magnitude2 = Math.sqrt(magnitude2);\n    \n    return dotProduct / (magnitude1 * magnitude2);",
+      "chunk_type": "code_block",
+      "chunk_index": 0,
+      "start_position": 0,
+      "end_position": 511,
+      "metadata": "{\"function\":\"function calculateSimilarity(vector1, vector2) {\",\"language\":\"javascript\",\"contentType\":\"code\",\"chunkIndex\":0,\"length\":511,\"wordCount\":62,\"createdAt\":\"2025-12-01T08:32:45.376Z\"}",
+      "created_at": "2025-12-01 08:32:45"
+    }
+  ],
+  "embeddings": [
+    {
+      "id": 1,
+      "chunk_id": "chunk_108ea6ff4b62",
+      "vector_json": "[0.3681252372276019,0.18406261861380094,0.3681252372276019,0.3681252372276019,0.0763928889401875,0.0763928889401875,0.0763928889401875,0.3681252372276019,0.3681252372276019,0.3681252372276019,0.3681252372276019,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]",
+      "dimensions": 300,
+      "magnitude": 1,
+      "method": "tfidf",
+      "metadata": "{\"dimensions\":300,\"method\":\"tfidf\",\"magnitude\":1,\"nonZeroElements\":11,\"generatedAt\":\"2025-12-01T08:32:45.377Z\"}",
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 2,
+      "chunk_id": "chunk_ccebdf4edddf",
+      "vector_json": "[0,0,0,0,0.04500825923524162,0.04500825923524162,0.09001651847048324,0,0,0,0,0.43377535103162074,0.43377535103162074,0.21688767551581037,0.21688767551581037,0.21688767551581037,0.21688767551581037,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.21688767551581037,0.10844383775790518,0.10844383775790518,0.21688767551581037,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.21688767551581037,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0.10844383775790518,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]",
+      "dimensions": 300,
+      "magnitude": 1.0000000000000004,
+      "method": "tfidf",
+      "metadata": "{\"dimensions\":300,\"method\":\"tfidf\",\"magnitude\":1.0000000000000004,\"nonZeroElements\":36,\"generatedAt\":\"2025-12-01T08:32:45.377Z\"}",
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 3,
+      "chunk_id": "chunk_6486d6f2cd26",
+      "vector_json": "[0,0.09687743935917101,0,0,0.04020777016816816,0.08041554033633631,0.08041554033633631,0,0,0,0,0,0,0,0,0,0,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.290632318077513,0.09687743935917101,0.09687743935917101,0.290632318077513,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.290632318077513,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.09687743935917101,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0.19375487871834202,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]",
+      "dimensions": 300,
+      "magnitude": 1.0000000000000002,
+      "method": "tfidf",
+      "metadata": "{\"dimensions\":300,\"method\":\"tfidf\",\"magnitude\":1.0000000000000002,\"nonZeroElements\":45,\"generatedAt\":\"2025-12-01T08:32:45.377Z\"}",
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 4,
+      "chunk_id": "chunk_56e9dc662574",
+      "vector_json": "[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.04364357804719847,0,0,0,0,0,0,0,0,0,0,0,0,0,0.08728715609439694,0.08728715609439694,0.08728715609439694,0.08728715609439694,0.08728715609439694,0.4364357804719848,0.34914862437758776,0.34914862437758776,0.26186146828319085,0.4364357804719848,0.4364357804719848,0.08728715609439694,0.17457431218879388,0.17457431218879388,0.08728715609439694]",
+      "dimensions": 300,
+      "magnitude": 0.9999999999999999,
+      "method": "tfidf",
+      "metadata": "{\"dimensions\":300,\"method\":\"tfidf\",\"magnitude\":0.9999999999999999,\"nonZeroElements\":16,\"generatedAt\":\"2025-12-01T08:32:45.377Z\"}",
+      "created_at": "2025-12-01 08:32:45"
+    }
+  ],
+  "vocabulary": [
+    {
+      "id": 1,
+      "term": "features",
+      "term_index": 0,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 2,
+      "term": "vector",
+      "term_index": 4,
+      "idf_score": 0.28768207245178085,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 3,
+      "term": "similarity",
+      "term_index": 5,
+      "idf_score": 0.28768207245178085,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 4,
+      "term": "search",
+      "term_index": 6,
+      "idf_score": 0.28768207245178085,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 5,
+      "term": "multiple",
+      "term_index": 7,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 6,
+      "term": "file",
+      "term_index": 8,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 7,
+      "term": "format",
+      "term_index": 9,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 8,
+      "term": "support",
+      "term_index": 10,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 9,
+      "term": "machine",
+      "term_index": 11,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 10,
+      "term": "learning",
+      "term_index": 12,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 11,
+      "term": "natural",
+      "term_index": 13,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 12,
+      "term": "language",
+      "term_index": 14,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 13,
+      "term": "processing",
+      "term_index": 15,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 14,
+      "term": "revolutionized",
+      "term_index": 16,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 15,
+      "term": "how",
+      "term_index": 17,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 16,
+      "term": "process",
+      "term_index": 18,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 17,
+      "term": "understand",
+      "term_index": 19,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 18,
+      "term": "text",
+      "term_index": 20,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 19,
+      "term": "modern",
+      "term_index": 21,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 20,
+      "term": "nlp",
+      "term_index": 22,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 21,
+      "term": "systems",
+      "term_index": 23,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 22,
+      "term": "perform",
+      "term_index": 24,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 23,
+      "term": "tasks",
+      "term_index": 25,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 24,
+      "term": "like",
+      "term_index": 26,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 25,
+      "term": "translation",
+      "term_index": 27,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 26,
+      "term": "summarization",
+      "term_index": 28,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 27,
+      "term": "semantic",
+      "term_index": 29,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 28,
+      "term": "remarkable",
+      "term_index": 30,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 29,
+      "term": "accuracy",
+      "term_index": 31,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 30,
+      "term": "embeddings",
+      "term_index": 32,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 31,
+      "term": "key",
+      "term_index": 33,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 32,
+      "term": "component",
+      "term_index": 34,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 33,
+      "term": "allowing",
+      "term_index": 35,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 34,
+      "term": "represent",
+      "term_index": 36,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 35,
+      "term": "numerical",
+      "term_index": 37,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 36,
+      "term": "vectors",
+      "term_index": 38,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 37,
+      "term": "capture",
+      "term_index": 39,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 38,
+      "term": "meaning",
+      "term_index": 40,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 39,
+      "term": "enables",
+      "term_index": 41,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 40,
+      "term": "clustering",
+      "term_index": 42,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 41,
+      "term": "documents",
+      "term_index": 43,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 42,
+      "term": "indexing",
+      "term_index": 44,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 43,
+      "term": "use",
+      "term_index": 45,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 44,
+      "term": "techniques",
+      "term_index": 46,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 45,
+      "term": "make",
+      "term_index": 47,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 46,
+      "term": "large",
+      "term_index": 48,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 47,
+      "term": "collections",
+      "term_index": 49,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 48,
+      "term": "searchable",
+      "term_index": 50,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 49,
+      "term": "retrievable",
+      "term_index": 51,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 50,
+      "term": "based",
+      "term_index": 52,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 51,
+      "term": "rather",
+      "term_index": 53,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 52,
+      "term": "than",
+      "term_index": 54,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 53,
+      "term": "just",
+      "term_index": 55,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 54,
+      "term": "keyword",
+      "term_index": 56,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 55,
+      "term": "matching",
+      "term_index": 57,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 56,
+      "term": "example",
+      "term_index": 58,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 57,
+      "term": "javascript",
+      "term_index": 59,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 58,
+      "term": "code",
+      "term_index": 60,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 59,
+      "term": "function",
+      "term_index": 61,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 60,
+      "term": "calculatesimilarity",
+      "term_index": 62,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 61,
+      "term": "vector1",
+      "term_index": 63,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 62,
+      "term": "vector2",
+      "term_index": 64,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 63,
+      "term": "let",
+      "term_index": 65,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 64,
+      "term": "dotproduct",
+      "term_index": 66,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 65,
+      "term": "magnitude1",
+      "term_index": 67,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 66,
+      "term": "magnitude2",
+      "term_index": 68,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 67,
+      "term": "length",
+      "term_index": 69,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 68,
+      "term": "math",
+      "term_index": 70,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 69,
+      "term": "sqrt",
+      "term_index": 71,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 70,
+      "term": "return",
+      "term_index": 72,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 71,
+      "term": "chunking",
+      "term_index": 2,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 72,
+      "term": "embedding",
+      "term_index": 3,
+      "idf_score": 1.3862943611198906,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    },
+    {
+      "id": 73,
+      "term": "document",
+      "term_index": 1,
+      "idf_score": 0.6931471805599453,
+      "document_count": 4,
+      "created_at": "2025-12-01 08:32:45"
+    }
+  ]
+}

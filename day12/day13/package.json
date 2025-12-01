@@ -1,0 +1,27 @@
+{
+  "name": "day13",
+  "version": "1.0.0",
+  "description": "Document Indexing System - Vector embeddings and semantic search for local documents",
+  "main": "document-indexer.js",
+  "bin": {
+    "index-docs": "./index-documents.js",
+    "search-docs": "./search-index.js"
+  },
+  "scripts": {
+    "start": "node index-documents.js --help",
+    "index": "node index-documents.js",
+    "search": "node search-index.js",
+    "demo": "node index-documents.js --create-samples && node index-documents.js --source ./sample-docs && node search-index.js --query \"machine learning\"",
+    "test": "node test-indexer.js"
+  },
+  "keywords": ["document", "indexing", "search", "embeddings", "vector", "similarity", "nlp"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7",
+    "uuid": "^13.0.0"
+  }
+}
