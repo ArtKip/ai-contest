@@ -1,0 +1,22 @@
+{
+  "name": "day14",
+  "version": "1.0.0",
+  "description": "RAG (Retrieval Augmented Generation) System - Compare answers with and without document retrieval",
+  "main": "rag-agent.js",
+  "scripts": {
+    "start": "node rag-agent.js --help",
+    "compare": "node rag-agent.js",
+    "demo": "node create-knowledge-base.js && node rag-agent.js --question \"What is machine learning?\"",
+    "test": "node test-rag.js",
+    "evaluation": "node evaluation.js"
+  },
+  "keywords": ["rag", "retrieval", "augmented", "generation", "llm", "search", "comparison"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "openai": "^4.20.1",
+    "sqlite3": "^5.1.7",
+    "uuid": "^13.0.0",
+    "crypto-js": "^4.2.0"
+  }
+}

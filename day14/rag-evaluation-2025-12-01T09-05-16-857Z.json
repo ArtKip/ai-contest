@@ -1,0 +1,130 @@
+{
+  "totalQuestions": 20,
+  "scenarioAnalysis": {
+    "Factual Questions": {
+      "name": "Factual Questions",
+      "description": "Questions with definitive answers in the knowledge base",
+      "totalQuestions": 4,
+      "ragWins": 3,
+      "directWins": 1,
+      "avgRAGScore": 53,
+      "avgDirectScore": 40,
+      "contextFoundRate": 0.75,
+      "commonAdvantages": {
+        "Provided specific examples from documents": 2,
+        "More technical detail and accuracy": 3,
+        "More factual claims with document backing": 3,
+        "Clear attribution to source documents": 3,
+        "More comprehensive and detailed answer": 1
+      },
+      "commonDisadvantages": {
+        "Significantly slower response time": 3,
+        "No relevant context found in knowledge base": 1,
+        "Lower confidence due to limited context": 1
+      }
+    },
+    "Technical Implementation": {
+      "name": "Technical Implementation",
+      "description": "Questions about specific code or implementation details",
+      "totalQuestions": 4,
+      "ragWins": 4,
+      "directWins": 0,
+      "avgRAGScore": 63,
+      "avgDirectScore": 45,
+      "contextFoundRate": 1.75,
+      "commonAdvantages": {
+        "More technical detail and accuracy": 2,
+        "More factual claims with document backing": 3,
+        "Clear attribution to source documents": 4,
+        "More comprehensive and detailed answer": 3
+      },
+      "commonDisadvantages": {}
+    },
+    "Conceptual Understanding": {
+      "name": "Conceptual Understanding",
+      "description": "Questions requiring synthesis of multiple concepts",
+      "totalQuestions": 4,
+      "ragWins": 3,
+      "directWins": 1,
+      "avgRAGScore": 54,
+      "avgDirectScore": 48,
+      "contextFoundRate": 2.5,
+      "commonAdvantages": {
+        "More factual claims with document backing": 2,
+        "Clear attribution to source documents": 3,
+        "More comprehensive and detailed answer": 2,
+        "More technical detail and accuracy": 1
+      },
+      "commonDisadvantages": {
+        "No relevant context found in knowledge base": 1,
+        "Lower confidence due to limited context": 1,
+        "Significantly slower response time": 1
+      }
+    },
+    "Application Examples": {
+      "name": "Application Examples",
+      "description": "Questions about practical applications and use cases",
+      "totalQuestions": 4,
+      "ragWins": 4,
+      "directWins": 0,
+      "avgRAGScore": 64,
+      "avgDirectScore": 45,
+      "contextFoundRate": 3.5,
+      "commonAdvantages": {
+        "Provided specific examples from documents": 1,
+        "More technical detail and accuracy": 2,
+        "More factual claims with document backing": 3,
+        "Clear attribution to source documents": 4,
+        "More comprehensive and detailed answer": 2
+      },
+      "commonDisadvantages": {}
+    },
+    "Edge Cases": {
+      "name": "Edge Cases",
+      "description": "Questions outside the knowledge base domain",
+      "totalQuestions": 4,
+      "ragWins": 2,
+      "directWins": 2,
+      "avgRAGScore": 39,
+      "avgDirectScore": 55,
+      "contextFoundRate": 4,
+      "commonAdvantages": {
+        "Clear attribution to source documents": 2
+      },
+      "commonDisadvantages": {
+        "No relevant context found in knowledge base": 2
+      }
+    }
+  },
+  "overallMetrics": {
+    "ragWins": 16,
+    "directWins": 4,
+    "ragAdvantageFrequency": {
+      "Provided specific examples from documents": 3,
+      "More technical detail and accuracy": 8,
+      "More factual claims with document backing": 11,
+      "Clear attribution to source documents": 16,
+      "More comprehensive and detailed answer": 8
+    },
+    "ragDisadvantageFrequency": {
+      "Significantly slower response time": 4,
+      "No relevant context found in knowledge base": 4,
+      "Lower confidence due to limited context": 2
+    },
+    "averagePerformance": {
+      "rag": 355,
+      "direct": 277
+    },
+    "contextFoundRate": 0.8
+  },
+  "insights": [
+    "RAG consistently outperforms direct LLM across most scenarios",
+    "Knowledge base provides good coverage for most questions",
+    "RAG latency overhead is acceptable",
+    "Primary RAG benefit: Clear attribution to source documents (16 occurrences)",
+    "RAG excels in \"Factual Questions\" scenarios",
+    "RAG excels in \"Technical Implementation\" scenarios",
+    "RAG excels in \"Conceptual Understanding\" scenarios",
+    "RAG excels in \"Application Examples\" scenarios"
+  ]
+}
