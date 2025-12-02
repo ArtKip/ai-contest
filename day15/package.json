@@ -1,0 +1,23 @@
+{
+  "name": "day15",
+  "version": "1.0.0",
+  "description": "RAG Reranking & Filtering - Improve retrieval quality with second-stage filtering and reranking",
+  "main": "reranked-rag.js",
+  "scripts": {
+    "start": "node reranked-rag.js --help", 
+    "demo": "node setup-knowledge-base.js && node demo.js",
+    "compare": "node setup-knowledge-base.js && node comparison-demo.js",
+    "tune": "node setup-knowledge-base.js && node threshold-tuning.js",
+    "rerank": "node setup-knowledge-base.js && node reranked-rag.js"
+  },
+  "keywords": ["rag", "reranking", "filtering", "retrieval", "llm", "similarity", "threshold"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "sqlite3": "^5.1.7",
+    "uuid": "^13.0.0",
+    "crypto-js": "^4.2.0"
+  }
+}
