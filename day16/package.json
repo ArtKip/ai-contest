@@ -1,0 +1,23 @@
+{
+  "name": "day16",
+  "version": "1.0.0",
+  "description": "RAG Citations & Sources - Enhance RAG pipeline with mandatory citations and source references",
+  "main": "cited-rag.js",
+  "scripts": {
+    "start": "node cited-rag.js --help",
+    "demo": "node setup-knowledge-base.js && node demo.js",
+    "test": "node setup-knowledge-base.js && node citation-tests.js",
+    "compare": "node setup-knowledge-base.js && node comparison-demo.js",
+    "setup": "node setup-knowledge-base.js"
+  },
+  "keywords": ["rag", "citations", "sources", "references", "llm", "hallucination", "verification"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "sqlite3": "^5.1.7",
+    "uuid": "^13.0.0",
+    "crypto-js": "^4.2.0"
+  }
+}

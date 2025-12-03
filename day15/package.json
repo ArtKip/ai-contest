@@ -5,10 +5,12 @@
   "main": "reranked-rag.js",
   "scripts": {
     "start": "node reranked-rag.js --help", 
-    "demo": "node setup-knowledge-base.js && node demo.js",
+    "demo": "node simple-demo.js",
+    "setup": "node setup-knowledge-base.js",
     "compare": "node setup-knowledge-base.js && node comparison-demo.js",
     "tune": "node setup-knowledge-base.js && node threshold-tuning.js",
-    "rerank": "node setup-knowledge-base.js && node reranked-rag.js"
+    "rerank": "node setup-knowledge-base.js && node reranked-rag.js",
+    "old-demo": "node setup-knowledge-base.js && node demo.js"
   },
   "keywords": ["rag", "reranking", "filtering", "retrieval", "llm", "similarity", "threshold"],
   "author": "",
