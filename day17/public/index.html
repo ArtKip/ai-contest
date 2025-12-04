@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 17: Image Generation Fundamentals</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Day 17: Image Generation Fundamentals</h1>
+            <p>Multi-model image generation with parameter control and comprehensive logging</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Generation Controls -->
+            <div class="panel generation-panel">
+                <h2>🖼️ Generate Image</h2>
+                
+                <form id="generationForm">
+                    <div class="form-group">
+                        <label for="prompt">Prompt:</label>
+                        <textarea id="prompt" name="prompt" rows="3" placeholder="A beautiful landscape with mountains and lakes"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="model">Model:</label>
+                            <select id="model" name="model">
+                                <option value="mock">Mock Generator (Testing)</option>
+                                <option value="dalle3">DALL-E 3 (OpenAI)</option>
+                                <option value="sdxl">Stable Diffusion XL</option>
+                                <option value="flux">Flux (Replicate)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="size">Size:</label>
+                            <select id="size" name="size">
+                                <option value="1024x1024">1024x1024</option>
+                                <option value="1024x768">1024x768</option>
+                                <option value="768x1024">768x1024</option>
+                                <option value="1024x1792">1024x1792 (DALL-E only)</option>
+                                <option value="1792x1024">1792x1024 (DALL-E only)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="seed">Seed:</label>
+                            <input type="number" id="seed" name="seed" placeholder="Random" min="0" max="999999">
+                        </div>
+
+                        <div class="form-group" id="qualityGroup">
+                            <label for="quality">Quality:</label>
+                            <select id="quality" name="quality">
+                                <option value="standard">Standard</option>
+                                <option value="hd">HD (DALL-E only)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Parameters -->
+                    <div class="advanced-params" id="advancedParams">
+                        <h3>Advanced Parameters</h3>
+                        
+                        <div class="form-row" id="dalleParams" style="display: none;">
+                            <div class="form-group">
+                                <label for="style">Style:</label>
+                                <select id="style" name="style">
+                                    <option value="vivid">Vivid</option>
+                                    <option value="natural">Natural</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row" id="diffusionParams" style="display: none;">
+                            <div class="form-group">
+                                <label for="steps">Steps:</label>
+                                <input type="number" id="steps" name="steps" value="30" min="1" max="150">
+                            </div>
+
+                            <div class="form-group" id="cfgScaleGroup">
+                                <label for="cfg_scale">CFG Scale:</label>
+                                <input type="number" id="cfg_scale" name="cfg_scale" value="7" min="0" max="35" step="0.5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="generateBtn" class="generate-btn">
+                        🎨 Generate Image
+                    </button>
+                </form>
+
+                <!-- Generation Progress -->
+                <div id="progressContainer" class="progress-container" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p id="progressText">Generating image...</p>
+                </div>
+            </div>
+
+            <!-- Image Display -->
+            <div class="panel image-panel">
+                <h2>🖼️ Generated Image</h2>
+                <div id="imageContainer" class="image-container">
+                    <div class="placeholder">
+                        <p>Your generated image will appear here</p>
+                    </div>
+                </div>
+                
+                <!-- Generation Details -->
+                <div id="imageDetails" class="image-details" style="display: none;">
+                    <h3>Generation Details</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="label">Model:</span>
+                            <span id="detailModel">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Size:</span>
+                            <span id="detailSize">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Seed:</span>
+                            <span id="detailSeed">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Latency:</span>
+                            <span id="detailLatency">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Cost:</span>
+                            <span id="detailCost">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Request ID:</span>
+                            <span id="detailRequestId">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics and History -->
+        <div class="bottom-panels">
+            <!-- Statistics -->
+            <div class="panel stats-panel">
+                <h2>📊 Statistics</h2>
+                <div id="statsContainer">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalRequests">0</span>
+                            <span class="stat-label">Total Requests</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="successRate">0%</span>
+                            <span class="stat-label">Success Rate</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="avgLatency">0ms</span>
+                            <span class="stat-label">Avg Latency</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="totalCost">$0.00</span>
+                            <span class="stat-label">Total Cost</span>
+                        </div>
+                    </div>
+                    
+                    <div class="model-stats" id="modelStats">
+                        <h3>Model Usage</h3>
+                        <div id="modelStatsContent">No data yet</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History -->
+            <div class="panel history-panel">
+                <h2>📋 Generation History</h2>
+                <div class="history-controls">
+                    <button id="refreshHistory" class="btn">🔄 Refresh</button>
+                    <button id="clearHistory" class="btn btn-danger">🗑️ Clear History</button>
+                </div>
+                <div id="historyContainer" class="history-container">
+                    <p>No generations yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="grad8372" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" style="stop-color:#6C757D;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#9FBBCC;stop-opacity:1" />
+                </radialGradient>
+                <linearGradient id="linear8372" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#8E9AAF;stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:#6C757D;stop-opacity:0.4" />
+                </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grad8372)" /><rect x="246.09632909297943" y="333.05029368400574" width="20.192234349250796" height="20.192234349250796" 
+                    fill="#8E9AAF" opacity="0.22375244149006904"
+                    transform="rotate(204.7976265102625 256.19244626760485 343.14641085863116)" /><rect x="234.0796082019806" y="504.70920383930206" width="68.8774832725525" height="68.8774832725525" 
+                    fill="#8E9AAF" opacity="0.5243513260968029"
+                    transform="rotate(169.515020577237 268.5183498382568 539.1479454755784)" /><rect x="198.58096182346344" y="504.34600257873535" width="91.7618343114853" height="91.7618343114853" 
+                    fill="#8E9AAF" opacity="0.5346257080789656"
+                    transform="rotate(180.81100361421704 244.4618789792061 550.226919734478)" /><rect x="339.9517216682434" y="468.3766349554062" width="58.23318991661072" height="58.23318991661072" 
+                    fill="#8E9AAF" opacity="0.6637593556195498"
+                    transform="rotate(47.177250729873776 369.0683166265488 497.49322991371156)" /><rect x="156.20558059215546" y="278.90195965766907" width="60.25319674015046" height="60.25319674015046" 
+                    fill="#8E9AAF" opacity="0.7196833469439299"
+                    transform="rotate(215.42786490172148 186.33217896223067 309.0285580277443)" /><rect x="55.22144293785095" y="281.17292845249176" width="57.919837188720706" height="57.919837188720706" 
+                    fill="#8E9AAF" opacity="0.36279221726581456"
+                    transform="rotate(195.36298505030572 84.1813615322113 310.13284704685213)" /><rect x="390.04600632190704" y="361.5397744178772" width="22.775943827629092" height="22.775943827629092" 
+                    fill="#8E9AAF" opacity="0.6836989450734108"
+                    transform="rotate(34.00679787620902 401.4339782357216 372.92774633169176)" /><rect x="450.72136783599854" y="433.66401755809784" width="99.13853898048401" height="99.13853898048401" 
+                    fill="#8E9AAF" opacity="0.32470746580511334"
+                    transform="rotate(278.331505889073 500.2906373262405 483.23328704833983)" /><rect width="100%" height="100%" fill="url(#linear8372)" />
+            <text x="50%" y="90%" text-anchor="middle" font-family="Arial, sans-serif" 
+                  font-size="8.533333333333333" fill="#FFFFFF" opacity="0.8">
+                "Abstract geometric pattern in vibrant colors" - Seed: 8372
+            </text>
+        </svg>

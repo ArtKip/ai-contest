@@ -1,0 +1,36 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="grad89257" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" style="stop-color:#BDC3C7;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#34495E;stop-opacity:1" />
+                </radialGradient>
+                <linearGradient id="linear89257" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#BDC3C7;stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:#BDC3C7;stop-opacity:0.4" />
+                </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grad89257)" /><rect x="423.8515000343323" y="114.96144902706146" width="34.77393974084407" height="34.77393974084407" 
+                        fill="#34495E" opacity="0.26513877883553505"
+                        rx="8.693484935211018" /><rect x="25.943562388420105" y="213.0513870716095" width="31.14836950553581" height="31.14836950553581" 
+                        fill="#34495E" opacity="0.30479452116414907"
+                        rx="7.787092376383953" /><circle cx="505.30296874046326" cy="8.909521698951721" r="9.759943839162588" 
+                        fill="#BDC3C7" opacity="0.5044704141095281" /><circle cx="397.4052497148514" cy="406.14841508865356" r="5.688249311642721" 
+                        fill="#BDC3C7" opacity="0.2128429767675698" /><rect x="448.4239721298218" y="489.0761936903" width="20.79116105567664" height="20.79116105567664" 
+                        fill="#34495E" opacity="0.43232592158019545"
+                        rx="5.19779026391916" /><rect x="510.7781938314438" y="57.95408606529236" width="23.24070114409551" height="23.24070114409551" 
+                        fill="#34495E" opacity="0.4274061023257673"
+                        rx="5.810175286023878" /><circle cx="47.23326325416565" cy="396.3849421739578" r="16.213053981773555" 
+                        fill="#BDC3C7" opacity="0.36018941160291434" /><rect x="223.7126785516739" y="427.1330270767212" width="26.56806727172807" height="26.56806727172807" 
+                        fill="#34495E" opacity="0.3043235437013209"
+                        rx="6.642016817932017" /><circle cx="52.488486766815186" cy="327.3023351430893" r="11.570435140747577" 
+                        fill="#BDC3C7" opacity="0.29816455096006395" /><rect x="311.82590663433075" y="90.10731148719788" width="21.807814266067" height="21.807814266067" 
+                        fill="#34495E" opacity="0.3157802569679916"
+                        rx="5.45195356651675" /><circle cx="34.1207492351532" cy="336.98744547367096" r="19.664371022954583" 
+                        fill="#BDC3C7" opacity="0.536039168573916" /><rect x="117.11703884601593" y="359.9519667625427" width="16.58255215967074" height="16.58255215967074" 
+                        fill="#34495E" opacity="0.4846273397095502"
+                        rx="4.145638039917685" /><rect width="100%" height="100%" fill="url(#linear89257)" />
+            <text x="50%" y="90%" text-anchor="middle" font-family="Arial, sans-serif" 
+                  font-size="8.533333333333333" fill="#333333" opacity="0.8">
+                "Futuristic city with neon lights" - Seed: 89257
+            </text>
+        </svg>

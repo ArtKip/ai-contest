@@ -1,0 +1,37 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="grad80403" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" style="stop-color:#27AE60;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#2ECC71;stop-opacity:1" />
+                </radialGradient>
+                <linearGradient id="linear80403" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#27AE60;stop-opacity:0.8" />
+                    <stop offset="100%" style="stop-color:#27AE60;stop-opacity:0.4" />
+                </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grad80403)" /><rect x="202.9802348613739" y="68.2994304895401" width="22.562640849500895" height="22.562640849500895" 
+                        fill="#2ECC71" opacity="0.3082402685657144"
+                        rx="5.640660212375224" /><rect x="419.1507645845413" y="7.286885738372803" width="12.598660180810839" height="12.598660180810839" 
+                        fill="#2ECC71" opacity="0.44520976589992645"
+                        rx="3.1496650452027097" /><rect x="358.4150581359863" y="353.51060473918915" width="15.637908256612718" height="15.637908256612718" 
+                        fill="#2ECC71" opacity="0.26270250864326955"
+                        rx="3.9094770641531795" /><circle cx="496.162083029747" cy="392.12189173698425" r="11.934872240526602" 
+                        fill="#27AE60" opacity="0.39021709030494095" /><rect x="507.73378682136536" y="342.375635266304" width="13.583502741530538" height="13.583502741530538" 
+                        fill="#2ECC71" opacity="0.256556667201221"
+                        rx="3.3958756853826344" /><circle cx="103.55238592624664" cy="344.050687789917" r="16.36602481477894" 
+                        fill="#27AE60" opacity="0.5545230531133711" /><circle cx="229.6457257270813" cy="164.48267209529877" r="13.690514529589564" 
+                        fill="#27AE60" opacity="0.2205046318471432" /><rect x="213.44327056407928" y="372.80247616767883" width="26.55330904526636" height="26.55330904526636" 
+                        fill="#2ECC71" opacity="0.5986033971421421"
+                        rx="6.63832726131659" /><rect x="273.99067282676697" y="445.55377638339996" width="36.27937778830528" height="36.27937778830528" 
+                        fill="#2ECC71" opacity="0.21240864861756564"
+                        rx="9.06984444707632" /><rect x="256.3421984910965" y="118.81019449234009" width="15.850829950068146" height="15.850829950068146" 
+                        fill="#2ECC71" opacity="0.280136261601001"
+                        rx="3.9627074875170365" /><circle cx="134.74380207061768" cy="388.00839698314667" r="10.796538309659809" 
+                        fill="#27AE60" opacity="0.5598366405814886" /><rect x="484.59659707546234" y="39.61383605003357" width="34.68660063808784" height="34.68660063808784" 
+                        fill="#2ECC71" opacity="0.41852931221947076"
+                        rx="8.67165015952196" /><rect width="100%" height="100%" fill="url(#linear80403)" />
+            <text x="50%" y="90%" text-anchor="middle" font-family="Arial, sans-serif" 
+                  font-size="8.533333333333333" fill="#FFFFFF" opacity="0.8">
+                "A jumping cat in the sunlight" - Seed: 80403
+            </text>
+        </svg>
