@@ -1,0 +1,23 @@
+{
+  "name": "day18-prompt-style-systems",
+  "version": "1.0.0",
+  "description": "Day 18: Prompt & Style Systems for consistent brandable output",
+  "main": "style-system.js",
+  "scripts": {
+    "start": "node server.js",
+    "demo": "node demo.js",
+    "test": "node test-styles.js",
+    "grid": "node generate-grid.js"
+  },
+  "keywords": ["AI", "image-generation", "brand-consistency", "style-templates", "prompt-engineering"],
+  "author": "AI Contest Day 18",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "fs-extra": "^11.1.1",
+    "uuid": "^9.0.1",
+    "dotenv": "^16.3.1"
+  }
+}

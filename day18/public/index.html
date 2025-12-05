@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 18: Prompt & Style Systems</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Day 18: Prompt & Style Systems</h1>
+            <p>Brand-Consistent Visual Content Generation</p>
+        </header>
+
+        <main>
+            <!-- Navigation Tabs -->
+            <nav class="tabs">
+                <button class="tab-button active" data-tab="generate">Generate Images</button>
+                <button class="tab-button" data-tab="grid">Style Grid</button>
+                <button class="tab-button" data-tab="profiles">Style Profiles</button>
+                <button class="tab-button" data-tab="history">History</button>
+                <button class="tab-button" data-tab="stats">Statistics</button>
+            </nav>
+
+            <!-- Generate Images Tab -->
+            <section id="generate" class="tab-content active">
+                <div class="form-section">
+                    <h2>Generate Styled Image</h2>
+                    <form id="generateForm">
+                        <div class="form-group">
+                            <label for="baseSubject">Base Subject:</label>
+                            <input type="text" id="baseSubject" name="baseSubject" 
+                                   placeholder="e.g., a coffee cup on a wooden table"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="styleProfile">Style Profile:</label>
+                            <select id="styleProfile" name="styleProfile" required>
+                                <option value="">Select a style profile...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="aspectRatio">Aspect Ratio:</label>
+                            <select id="aspectRatio" name="aspectRatio">
+                                <option value="1:1">1:1 (Square)</option>
+                                <option value="16:9">16:9 (Landscape)</option>
+                                <option value="4:3">4:3 (Standard)</option>
+                                <option value="3:4">3:4 (Portrait)</option>
+                                <option value="9:16">9:16 (Vertical)</option>
+                                <option value="4:5">4:5 (Portrait+)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customAdditions">Custom Additions:</label>
+                            <input type="text" id="customAdditions" name="customAdditions" 
+                                   placeholder="Additional style modifiers (optional)">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="previewPrompt">Preview Prompt</button>
+                            <button type="submit" id="generateBtn">Generate Image</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Style Profile Preview -->
+                <div class="style-preview" id="stylePreview" style="display: none;">
+                    <h3>Style Profile Preview</h3>
+                    <div class="profile-info">
+                        <div class="profile-header">
+                            <h4 id="profileName"></h4>
+                            <p id="profileDescription"></p>
+                        </div>
+                        <div class="profile-details">
+                            <div class="color-palette" id="colorPalette"></div>
+                            <div class="profile-specs">
+                                <p><strong>Mood:</strong> <span id="profileMood"></span></p>
+                                <p><strong>Style:</strong> <span id="profileKeywords"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prompt Preview -->
+                <div class="prompt-preview" id="promptPreview" style="display: none;">
+                    <h3>Generated Prompt Preview</h3>
+                    <div class="prompt-content">
+                        <div class="prompt-section">
+                            <strong>Positive Prompt:</strong>
+                            <p id="positivePrompt"></p>
+                            <small>Length: <span id="promptLength"></span> characters</small>
+                        </div>
+                        <div class="prompt-section">
+                            <strong>Negative Prompt:</strong>
+                            <p id="negativePrompt"></p>
+                        </div>
+                        <div class="prompt-stats">
+                            <span>Size: <span id="promptSize"></span></span>
+                            <span>Words: <span id="promptWords"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generation Result -->
+                <div class="result-section" id="generateResult" style="display: none;">
+                    <h3>Generated Image</h3>
+                    <div class="result-content">
+                        <div class="image-container">
+                            <img id="generatedImage" alt="Generated Image">
+                        </div>
+                        <div class="result-info">
+                            <p><strong>Style:</strong> <span id="resultStyle"></span></p>
+                            <p><strong>Size:</strong> <span id="resultSize"></span></p>
+                            <p><strong>Latency:</strong> <span id="resultLatency"></span></p>
+                            <p><strong>Request ID:</strong> <span id="resultRequestId"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Style Grid Tab -->
+            <section id="grid" class="tab-content">
+                <div class="form-section">
+                    <h2>Generate Style Comparison Grid</h2>
+                    <form id="gridForm">
+                        <div class="form-group">
+                            <label for="gridBaseSubject">Base Subject:</label>
+                            <input type="text" id="gridBaseSubject" name="gridBaseSubject" 
+                                   placeholder="e.g., a premium wristwatch on marble surface"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gridAspectRatio">Aspect Ratio:</label>
+                            <select id="gridAspectRatio" name="gridAspectRatio">
+                                <option value="1:1">1:1 (Square)</option>
+                                <option value="16:9">16:9 (Landscape)</option>
+                                <option value="4:3">4:3 (Standard)</option>
+                                <option value="3:4">3:4 (Portrait)</option>
+                                <option value="9:16">9:16 (Vertical)</option>
+                                <option value="4:5">4:5 (Portrait+)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gridStyles">Style Profiles (leave empty for all):</label>
+                            <div class="checkbox-group" id="gridStyles">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gridCustomAdditions">Custom Additions:</label>
+                            <input type="text" id="gridCustomAdditions" name="gridCustomAdditions" 
+                                   placeholder="Additional style modifiers (optional)">
+                        </div>
+
+                        <button type="submit" id="gridGenerateBtn">Generate Style Grid</button>
+                    </form>
+                </div>
+
+                <!-- Grid Results -->
+                <div class="grid-results" id="gridResults" style="display: none;">
+                    <h3>Style Comparison Grid</h3>
+                    <div class="grid-info">
+                        <p><strong>Subject:</strong> <span id="gridSubject"></span></p>
+                        <p><strong>Aspect Ratio:</strong> <span id="gridRatio"></span></p>
+                        <p><strong>Grid ID:</strong> <span id="gridId"></span></p>
+                    </div>
+                    <div class="style-grid" id="styleGrid">
+                        <!-- Grid images will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Style Profiles Tab -->
+            <section id="profiles" class="tab-content">
+                <h2>Available Style Profiles</h2>
+                <div class="profiles-grid" id="profilesGrid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- History Tab -->
+            <section id="history" class="tab-content">
+                <div class="history-header">
+                    <h2>Generation History</h2>
+                    <div class="history-actions">
+                        <button id="refreshHistory">Refresh</button>
+                        <button id="clearHistory" class="danger">Clear History</button>
+                    </div>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Statistics Tab -->
+            <section id="stats" class="tab-content">
+                <h2>Generation Statistics</h2>
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p id="loadingMessage">Generating styled image...</p>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div class="message" id="successMessage" style="display: none;">
+            <span class="message-text"></span>
+            <button class="message-close">&times;</button>
+        </div>
+
+        <div class="message error" id="errorMessage" style="display: none;">
+            <span class="message-text"></span>
+            <button class="message-close">&times;</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

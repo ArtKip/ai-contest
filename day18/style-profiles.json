@@ -1,0 +1,136 @@
+{
+  "profiles": {
+    "minimalist_corporate": {
+      "name": "Minimalist Corporate",
+      "description": "Clean, professional, modern corporate aesthetic",
+      "color_palette": {
+        "primary": "#2E3440",
+        "secondary": "#4C566A",
+        "accent": "#5E81AC",
+        "light": "#ECEFF4",
+        "neutral": "#D8DEE9"
+      },
+      "mood": "professional, trustworthy, sophisticated, calm",
+      "visual_style": {
+        "composition": "centered, balanced, lots of white space",
+        "lighting": "soft, even lighting, minimal shadows",
+        "texture": "smooth, matte finishes, glass surfaces",
+        "detail_level": "minimal detail, focus on essential elements",
+        "geometry": "clean lines, geometric shapes, rectangular forms",
+        "color_treatment": "monochromatic with single accent color"
+      },
+      "dos": [
+        "Use clean typography and minimal text",
+        "Include plenty of negative space",
+        "Focus on single subject matter",
+        "Use subtle gradients and soft shadows",
+        "Maintain consistent lighting",
+        "Keep composition symmetrical or balanced"
+      ],
+      "donts": [
+        "Avoid clutter or busy backgrounds",
+        "No bright or neon colors",
+        "Avoid ornate decorations or textures",
+        "No hand-drawn or sketchy elements",
+        "Avoid multiple competing focal points",
+        "No vintage or distressed effects"
+      ],
+      "style_keywords": "minimalist, clean, corporate, professional, modern, geometric, balanced, sophisticated",
+      "technical_specs": {
+        "preferred_ratios": ["16:9", "4:3", "1:1"],
+        "resolution": "high resolution, crisp details",
+        "render_style": "photorealistic, studio lighting"
+      }
+    },
+    "vibrant_creative": {
+      "name": "Vibrant Creative",
+      "description": "Bold, energetic, artistic brand for creative industries",
+      "color_palette": {
+        "primary": "#FF6B6B",
+        "secondary": "#4ECDC4",
+        "accent": "#45B7D1",
+        "bright": "#FFA726",
+        "pop": "#9C27B0"
+      },
+      "mood": "energetic, inspiring, creative, bold, playful",
+      "visual_style": {
+        "composition": "dynamic, asymmetrical, rule of thirds",
+        "lighting": "dramatic lighting, strong contrasts",
+        "texture": "mixed textures, artistic brushstrokes, organic patterns",
+        "detail_level": "rich detail, layered elements, visual interest",
+        "geometry": "organic shapes, flowing lines, creative layouts",
+        "color_treatment": "vibrant colors, gradients, color overlays"
+      },
+      "dos": [
+        "Use bold, saturated colors",
+        "Include creative typography and hand-lettered elements",
+        "Layer multiple visual elements",
+        "Use dynamic angles and perspectives",
+        "Include artistic textures and patterns",
+        "Create visual movement and energy"
+      ],
+      "donts": [
+        "Avoid muted or corporate colors",
+        "No rigid geometric layouts",
+        "Avoid sterile or clinical aesthetics",
+        "No boring centered compositions",
+        "Avoid single flat colors",
+        "No conservative or traditional elements"
+      ],
+      "style_keywords": "vibrant, creative, artistic, bold, energetic, dynamic, colorful, expressive, modern art",
+      "technical_specs": {
+        "preferred_ratios": ["3:4", "9:16", "1:1"],
+        "resolution": "artistic rendering, painterly effects",
+        "render_style": "illustration style, artistic interpretation"
+      }
+    },
+    "luxury_premium": {
+      "name": "Luxury Premium",
+      "description": "High-end, sophisticated, premium brand aesthetic",
+      "color_palette": {
+        "primary": "#1A1A1A",
+        "secondary": "#D4AF37",
+        "accent": "#8B4513",
+        "luxury": "#2F4F4F",
+        "metallic": "#C0C0C0"
+      },
+      "mood": "sophisticated, exclusive, elegant, prestigious, timeless",
+      "visual_style": {
+        "composition": "classic, elegant, golden ratio proportions",
+        "lighting": "dramatic lighting, chiaroscuro, rich shadows",
+        "texture": "rich materials, leather, marble, gold, velvet",
+        "detail_level": "exquisite detail, craftsmanship, fine textures",
+        "geometry": "classical proportions, ornate details, refined forms",
+        "color_treatment": "rich deep colors, metallic accents, subtle gradients"
+      },
+      "dos": [
+        "Use premium materials and textures",
+        "Include elegant typography and serifs",
+        "Focus on craftsmanship and quality details",
+        "Use rich, deep color palettes",
+        "Include subtle luxury branding elements",
+        "Maintain classical composition rules"
+      ],
+      "donts": [
+        "Avoid cheap or plastic-looking materials",
+        "No bright or garish colors",
+        "Avoid casual or informal elements",
+        "No trendy or temporary design elements",
+        "Avoid cluttered compositions",
+        "No mass-market aesthetic choices"
+      ],
+      "style_keywords": "luxury, premium, elegant, sophisticated, exclusive, classic, refined, high-end, prestigious",
+      "technical_specs": {
+        "preferred_ratios": ["4:5", "3:4", "16:9"],
+        "resolution": "ultra-high resolution, museum quality",
+        "render_style": "photorealistic, studio photography, professional lighting"
+      }
+    }
+  },
+  "template_structure": {
+    "base_subject": "The main subject or object to be depicted",
+    "style_application": "How the selected style profile is applied",
+    "aspect_ratio": "Dimensional constraints from the style profile",
+    "technical_modifiers": "Rendering and quality specifications"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "baseSubject": "a premium wristwatch on a marble surface",
+  "aspectRatio": "1:1",
+  "customAdditions": "",
+  "styles": {
+    "minimalist_corporate": {
+      "requestId": "853a3a4c-ca81-445f-a987-43fe83cd1c26",
+      "success": true,
+      "baseSubject": "a premium wristwatch on a marble surface",
+      "styleProfile": "minimalist_corporate",
+      "aspectRatio": "1:1",
+      "promptData": {
+        "positive": "a premium wristwatch on a marble surface, centered, balanced, lots of white space, professional, trustworthy, sophisticated, calm, using color palette: primary #2E3440, secondary #4C566A, accent #5E81AC, light #ECEFF4, neutral #D8DEE9, soft, even lighting, minimal shadows, smooth, matte finishes, glass surfaces, clean lines, geometric shapes, rectangular forms, minimalist, clean, corporate, professional, modern, geometric, balanced, sophisticated, photorealistic, studio lighting, high resolution, crisp details",
+        "negative": "Avoid clutter or busy backgrounds, No bright or neon colors, Avoid ornate decorations or textures, No hand-drawn or sketchy elements, Avoid multiple competing focal points, No vintage or distressed effects",
+        "size": "1024x1024",
+        "styleProfile": "minimalist_corporate",
+        "aspectRatio": "1:1"
+      },
+      "result": {
+        "filename": "styled_minimalist_corporate_853a3a4c-ca81-445f-a987-43fe83cd1c26.jpg",
+        "filepath": "generated-styles/individual/styled_minimalist_corporate_853a3a4c-ca81-445f-a987-43fe83cd1c26.jpg",
+        "imageUrl": "https://api.together.ai/shrt/lZliY7woPbqhUD2c",
+        "size": "1024x1024",
+        "promptUsed": "a premium wristwatch on a marble surface, centered, balanced, lots of white space, professional, trustworthy, sophisticated, calm, using color palette: primary #2E3440, secondary #4C566A, accent #5E81AC, light #ECEFF4, neutral #D8DEE9, soft, even lighting, minimal shadows, smooth, matte finishes, glass surfaces, clean lines, geometric shapes, rectangular forms, minimalist, clean, corporate, professional, modern, geometric, balanced, sophisticated, photorealistic, studio lighting, high resolution, crisp details"
+      },
+      "performance": {
+        "latency": 2381,
+        "startTime": "2025-12-05T09:45:59.152Z",
+        "endTime": "2025-12-05T09:46:01.533Z"
+      },
+      "timestamp": "2025-12-05T09:46:01.533Z"
+    },
+    "vibrant_creative": {
+      "requestId": "d0d14518-7772-4abd-adbe-8debe17c565e",
+      "success": true,
+      "baseSubject": "a premium wristwatch on a marble surface",
+      "styleProfile": "vibrant_creative",
+      "aspectRatio": "1:1",
+      "promptData": {
+        "positive": "a premium wristwatch on a marble surface, dynamic, asymmetrical, rule of thirds, energetic, inspiring, creative, bold, playful, using color palette: primary #FF6B6B, secondary #4ECDC4, accent #45B7D1, bright #FFA726, pop #9C27B0, dramatic lighting, strong contrasts, mixed textures, artistic brushstrokes, organic patterns, organic shapes, flowing lines, creative layouts, vibrant, creative, artistic, bold, energetic, dynamic, colorful, expressive, modern art, illustration style, artistic interpretation, artistic rendering, painterly effects",
+        "negative": "Avoid muted or corporate colors, No rigid geometric layouts, Avoid sterile or clinical aesthetics, No boring centered compositions, Avoid single flat colors, No conservative or traditional elements",
+        "size": "1024x1024",
+        "styleProfile": "vibrant_creative",
+        "aspectRatio": "1:1"
+      },
+      "result": {
+        "filename": "styled_vibrant_creative_d0d14518-7772-4abd-adbe-8debe17c565e.jpg",
+        "filepath": "generated-styles/individual/styled_vibrant_creative_d0d14518-7772-4abd-adbe-8debe17c565e.jpg",
+        "imageUrl": "https://api.together.ai/shrt/NWMUEsmdVHF2zvVg",
+        "size": "1024x1024",
+        "promptUsed": "a premium wristwatch on a marble surface, dynamic, asymmetrical, rule of thirds, energetic, inspiring, creative, bold, playful, using color palette: primary #FF6B6B, secondary #4ECDC4, accent #45B7D1, bright #FFA726, pop #9C27B0, dramatic lighting, strong contrasts, mixed textures, artistic brushstrokes, organic patterns, organic shapes, flowing lines, creative layouts, vibrant, creative, artistic, bold, energetic, dynamic, colorful, expressive, modern art, illustration style, artistic interpretation, artistic rendering, painterly effects"
+      },
+      "performance": {
+        "latency": 3936,
+        "startTime": "2025-12-05T09:46:01.534Z",
+        "endTime": "2025-12-05T09:46:05.470Z"
+      },
+      "timestamp": "2025-12-05T09:46:05.470Z"
+    },
+    "luxury_premium": {
+      "requestId": "986bb342-ffc1-4777-8a78-eae87c9f8891",
+      "success": true,
+      "baseSubject": "a premium wristwatch on a marble surface",
+      "styleProfile": "luxury_premium",
+      "aspectRatio": "1:1",
+      "promptData": {
+        "positive": "a premium wristwatch on a marble surface, classic, elegant, golden ratio proportions, sophisticated, exclusive, elegant, prestigious, timeless, using color palette: primary #1A1A1A, secondary #D4AF37, accent #8B4513, luxury #2F4F4F, metallic #C0C0C0, dramatic lighting, chiaroscuro, rich shadows, rich materials, leather, marble, gold, velvet, classical proportions, ornate details, refined forms, luxury, premium, elegant, sophisticated, exclusive, classic, refined, high-end, prestigious, photorealistic, studio photography, professional lighting, ultra-high resolution, museum quality",
+        "negative": "Avoid cheap or plastic-looking materials, No bright or garish colors, Avoid casual or informal elements, No trendy or temporary design elements, Avoid cluttered compositions, No mass-market aesthetic choices",
+        "size": "1024x1024",
+        "styleProfile": "luxury_premium",
+        "aspectRatio": "1:1"
+      },
+      "result": {
+        "filename": "styled_luxury_premium_986bb342-ffc1-4777-8a78-eae87c9f8891.jpg",
+        "filepath": "generated-styles/individual/styled_luxury_premium_986bb342-ffc1-4777-8a78-eae87c9f8891.jpg",
+        "imageUrl": "https://api.together.ai/shrt/nQfdzpQd9ddhW9p0",
+        "size": "1024x1024",
+        "promptUsed": "a premium wristwatch on a marble surface, classic, elegant, golden ratio proportions, sophisticated, exclusive, elegant, prestigious, timeless, using color palette: primary #1A1A1A, secondary #D4AF37, accent #8B4513, luxury #2F4F4F, metallic #C0C0C0, dramatic lighting, chiaroscuro, rich shadows, rich materials, leather, marble, gold, velvet, classical proportions, ornate details, refined forms, luxury, premium, elegant, sophisticated, exclusive, classic, refined, high-end, prestigious, photorealistic, studio photography, professional lighting, ultra-high resolution, museum quality"
+      },
+      "performance": {
+        "latency": 4019,
+        "startTime": "2025-12-05T09:46:05.471Z",
+        "endTime": "2025-12-05T09:46:09.490Z"
+      },
+      "timestamp": "2025-12-05T09:46:09.490Z"
+    }
+  },
+  "gridId": "a36bd2b7-190f-4485-8a26-5babed695741",
+  "timestamp": "2025-12-05T09:45:59.152Z",
+  "analysisNotes": {
+    "consistency": {
+      "minimalist_corporate": {
+        "promptLength": 515,
+        "includesColorPalette": true,
+        "includesMoodKeywords": true,
+        "includesStyleKeywords": true,
+        "aspectRatioMatched": true
+      },
+      "vibrant_creative": {
+        "promptLength": 544,
+        "includesColorPalette": true,
+        "includesMoodKeywords": true,
+        "includesStyleKeywords": true,
+        "aspectRatioMatched": true
+      },
+      "luxury_premium": {
+        "promptLength": 587,
+        "includesColorPalette": true,
+        "includesMoodKeywords": true,
+        "includesStyleKeywords": true,
+        "aspectRatioMatched": true
+      }
+    },
+    "distinctiveness": {
+      "stylesGenerated": 3,
+      "uniquePromptElements": [
+        "a premium wri",
+        "twatch on a marble ",
+        "urface",
+        " centered",
+        " balanced",
+        " of white ",
+        " profe",
+        "ional",
+        "tworthy",
+        "ticated",
+        " calm",
+        "ing color palette: primary #2e3440",
+        "econdary #4c566a",
+        " accent #5e81ac",
+        " light #eceff4",
+        " neutral #d8dee9",
+        " even lighting",
+        " minimal ",
+        "hadow",
+        "mooth",
+        " matte fini",
+        " clean line",
+        " geometric ",
+        " rectangular form",
+        " minimali",
+        " clean",
+        " corporate",
+        " modern",
+        " geometric",
+        " photoreali",
+        "tudio lighting",
+        " high re",
+        "olution",
+        "p detail",
+        " dynamic",
+        "ymmetrical",
+        " rule of third",
+        " energetic",
+        "piring",
+        " creative",
+        " bold",
+        " playful",
+        "ing color palette: primary #ff6b6b",
+        "econdary #4ecdc4",
+        " accent #45b7d1",
+        " bright #ffa726",
+        " pop #9c27b0",
+        " dramatic lighting",
+        "trong contra",
+        " mixed texture",
+        " arti",
+        "tic bru",
+        "troke",
+        " organic pattern",
+        " organic ",
+        " flowing line",
+        " creative layout",
+        " vibrant",
+        " colorful",
+        " expre",
+        " modern art",
+        " illu",
+        "tration ",
+        "tic interpretation",
+        "tic rendering",
+        " painterly effect",
+        " elegant",
+        " golden ratio proportion",
+        " exclu",
+        "tigiou",
+        " timele",
+        "ing color palette: primary #1a1a1a",
+        "econdary #d4af37",
+        " accent #8b4513",
+        " luxury #2f4f4f",
+        " metallic #c0c0c0",
+        " chiaro",
+        " rich ",
+        " rich material",
+        " leather",
+        " marble",
+        " gold",
+        " velvet",
+        "ical proportion",
+        " ornate detail",
+        " refined form",
+        " luxury",
+        " premium",
+        " refined",
+        " high-end",
+        "tudio photography",
+        "ional lighting",
+        " ultra-high re",
+        "eum quality"
+      ]
+    },
+    "recommendations": [
+      "Good style variety achieved - compare visual results for brand differentiation",
+      "Review generated prompts for style keyword consistency",
+      "Test with different subjects to validate style robustness"
+    ]
+  }
+}
